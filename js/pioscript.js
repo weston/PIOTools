@@ -24,7 +24,6 @@ class PIOScript {
 		this.label("next")
 		this.solverTime()
 		this.echo("\"Thanks for using this tool.\"")
-		console.log(parsedHand.flop)
 	}
 
 	getRange(position, parsedHand) {
@@ -196,9 +195,6 @@ class PIOScript {
 				riverBets = [usedRiverBet/2, usedRiverBet]
 			}
 		}
-		console.log(flopBets)
-		console.log(turnBets)
-		console.log(riverBets)
 		var raises = [50]
 		return new BetConfig(flopBets, turnBets, riverBets, raises, raises, raises)
 	}
