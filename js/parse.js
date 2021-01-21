@@ -135,8 +135,10 @@ class HandHistory {
 			if (street != "") {
 				var potLine = this.hhLines[i+1]
 				var potSize = Number(potLine.split(" ")[2].replace("$", ""))
+				var rake = Number(potLine.split("Rake $")[1])
 				potSize *= SCALE_FACTOR
-				this.potSizes[street] = potSize
+				var total = (rake + potSize) * SCALE_FACTOR
+				this.potSizes[street] = total
 			}
 		}
 	}
