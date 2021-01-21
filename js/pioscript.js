@@ -1,6 +1,5 @@
 class PIOScript {
 	constructor(parsedHand, outputFilepath) {
-		console.log(parsedHand.flop)
 		this.script = []
 		this.setThreads(0)
 		this.setAccuracy(parsedHand.potSizes[FLOP] / 100)
@@ -24,7 +23,8 @@ class PIOScript {
 		this.dumpTree(outputFilepath)
 		this.label("next")
 		this.solverTime()
-		this.echo("Thanks for using this tool.")
+		this.echo("\"Thanks for using this tool.\"")
+		console.log(parsedHand.flop)
 	}
 
 	getRange(position, parsedHand) {
@@ -60,28 +60,9 @@ class PIOScript {
 	}
 
 	getLines(parsedHand) {
-		var cbetSize = 60
-		var cbet = parsedHand.flopCBetAction()
-		if (cbet != null) {
-			cbetSize = cbet.amount / parsedHand.potSizes[FLOP] * 100
-		}
-		var turnBets = [40, 80, 150]
-		var riverBets = [80, 150]
-		var raises = [50]
-		var cbettingPosition = this.getCBetPosition(parsedHand)
+		var oopConfig = this.getBetConfig("OOP", parsedHand)
+		var ipConfig = this.getBetConfig("IP", parsedHand)
 
-		if (cbettingPosition == "IP") {
-			var ipFlopBets = [cbetSize]
-			var oopFlopBets = []
-		} else{
-			var ipFlopBets = [33,75]
-			var oopFlopBets = [cbetSize]
-		}
-
-		var oopConfig = new BetConfig(
-			oopFlopBets, turnBets, riverBets, raises, raises, raises)
-		var ipConfig = new BetConfig(
-			ipFlopBets, turnBets, riverBets, raises, raises, raises)
 		var lines = generateLines(
 			parsedHand.potSizes[FLOP],
 			parsedHand.effectiveStacks[FLOP],
@@ -176,5 +157,49 @@ class PIOScript {
 
 	addCommand(command, params) {
 		this.script.push(command + " " + params.join(" "))
+	}
+
+	getBetConfig(position, parsedHand) {
+		var cbetSize = 60
+		var cbet = parsedHand.flopCBetAction()
+		if (cbet != null) {
+			cbetSize = cbet.amount / parsedHand.potSizes[FLOP] * 100
+		}
+		var cbettingPosition = this.getCBetPosition(parsedHand)
+		if (position == "OOP" && cbettingPosition != position){
+			var flopBets = []
+		} else{
+			var flopBets = [cbetSize]
+		}
+
+
+		var turnBets = [40, 80, 120]
+		var turnBetAction = parsedHand.getBetForStreet(TURN, position)
+		if (turnBetAction != null) {
+			var usedTurnBet = turnBetAction.amount / parsedHand.potSizes[TURN] * 100
+			if (usedTurnBet < 50) {
+				turnBets = [usedTurnBet, 2*usedTurnBet, 4*usedTurnBet]
+			} else if (usedTurnBet >= 50 && usedTurnBet < 100) {
+				turnBets = [usedTurnBet/2, usedTurnBet, usedTurnBet * 2]
+			} else {
+				turnBets = [usedTurnBet/4, usedTurnBet/2, usedTurnBet]
+			}
+		}
+
+		var riverBets = [75, 150]
+		var riverBetAction = parsedHand.getBetForStreet(RIVER, position)
+		if (riverBetAction != null) {
+			var usedRiverBet = riverBetAction.amount / parsedHand.potSizes[RIVER] * 100
+			if (usedRiverBet < 80) {
+				riverBets = [usedRiverBet, 2*usedRiverBet]
+			} else {
+				riverBets = [usedRiverBet/2, usedRiverBet]
+			}
+		}
+		console.log(flopBets)
+		console.log(turnBets)
+		console.log(riverBets)
+		var raises = [50]
+		return new BetConfig(flopBets, turnBets, riverBets, raises, raises, raises)
 	}
 }

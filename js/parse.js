@@ -67,7 +67,6 @@ class HandHistory {
         var orderedPositions = ["", "BTN", "SB", "BB", "LJ", "HJ", "CO"]
         while (true) {
 			var line = this.hhLines[lineIndex]
-			console.log(line)
 			if (line.includes("***")){
 				break
 			}
@@ -216,6 +215,21 @@ class HandHistory {
 			var action = this.actions[FLOP][i]
 			if (action.username == username && action.type == BET) {
 				return action
+			}
+		}
+		return null
+	}
+
+	getBetForStreet(street, position) {
+		for (var i = 0; i < this.actions[street].length; i++) {
+			var action = this.actions[street][i]
+			if (action.type == BET) {
+				if (i % 2 == 0 && position == "OOP"){
+					return action
+				}
+				if (i % 2 == 1 && position == "IP") {
+					return action
+				}
 			}
 		}
 		return null
