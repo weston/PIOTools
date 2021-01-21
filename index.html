@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+		<script src="js/ranges.js"></script>
+		<script src="js/generate_lines.js"></script>
+		<script src="js/pioscript.js"></script>
+		<script src="js/parse.js"></script>
+        <script src="js/main.js"></script>
+        <br/><br/>
+        <h1> Convert PT4 Hand Histories into a PioSolver scripts </h1>
+		Create a hand report, select all, right click, "Export Original Hand Histories"
+		<br/>
+		I now just realized that this only works for WPN lol
+		<br/>
+		version 0.0.7
+		<br/><br/>
+    </head>
+
+    <body id="body">
+		Output Directory <br/>
+		<input type="text" id="output-directory" value = "C:\PioSOLVER\saves\output"></input><br/><br/>
+		<br/>
+		Upload a PT4 hand history file<br/>
+		<input type="file" id="file-input"></input><br/><br/>
+		<input type="submit" onclick="parse()" value="Convert"></input>
+		<br/><br/>
+		Script will be here:
+		<br/>
+		<textarea id="script-output" cols=100 rows=30></textarea>
+
+		<text id="uploaded-file" hidden=true></text>
+
+
+    </form>
+    </body>
+
+</html>
+<script>init()</script>
+

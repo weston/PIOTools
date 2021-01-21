@@ -1,0 +1,88 @@
+.cell {
+    border-color: black;
+    border: solid thin;
+    font-size: 10pt;
+    padding: 3px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    text-align: center;
+}
+
+
+
+.noselect {
+    user-select: none;
+}
+
+
+.pocket-pair {
+    background-color: #d1d1d1;
+}
+
+
+.column {
+    text-align: center;
+}
+
+.hover-box-elem {
+}
+
+.hover-box-inner-elem {
+    border: solid thin;
+    padding: 5px;
+    padding-top: 8px;
+}
+
+#p1-wins {
+    background-color: #ff9999; /* red */
+    height:20px;
+    padding-top: 5px;
+}
+
+#ties {
+    background-color: #e6e6e6;
+    height:20px;
+    padding-top: 5px;
+}
+
+#p2-wins {
+    background-color: #66ff66; /* green */
+    height:20px;
+    padding-top: 5px;
+}
+
+#bar-graph {
+}
+
+
+/* Below is slider stuff from https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+.slidecontainer {
+  width: 35%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 24px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  border-radius: 12px;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #00c6ff;
+  cursor: pointer;
+  border-radius: 50%;
+}
