@@ -42,6 +42,7 @@ function parse() {
 			continue
 		}
 		parsedHands.push(parsedHand)
+		console.log(parsedHand.pioDescription())
 
     }
 	var outputElem = document.getElementById("script-output")

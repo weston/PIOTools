@@ -54,7 +54,7 @@ class HandHistory {
         this.hhLines = hh_text.split("\n")
         this.parseSeatsAndStacks()
 		this.parseActions()
-        this.parseFlopCards()
+        this.parseBoard()
 		this.parsePotSizes()
 		this.parseEffectiveStacks()
     }
@@ -142,20 +142,30 @@ class HandHistory {
 		}
 	}
 
-    parseFlopCards() {
-        for (var i = 0; i < this.hhLines.length; i++) {
+    parseBoard() {
+		this.flop = null
+		this.turn = null
+		this.river = null
+        this.pot = 0
+		var i = 0;
+        for (; i < this.hhLines.length; i++) {
             var line = this.hhLines[i]
             if (line.includes(FLOP_MARKER)) {
                 this.flop = line.split("[")[1].split("]")[0].split(" ")
                 this.pot = Number(
 					this.hhLines[i+1].split(" ")[2].replace("$", ""))
 				this.pot *= SCALE_FACTOR
-                return
             }
+			if (line.includes(TURN_MARKER)) {
+				var components = line.split("[")
+				this.turn = components[components.length-1].split("]")[0]
+			}
+			if (line.includes(RIVER_MARKER)) {
+				var components = line.split("[")
+				this.river = components[components.length-1].split("]")[0]
+			}
         }
-        this.flop = null
-        this.pot = 0
-    }
+	}
 
 	parseEffectiveStacks() {
 		this.effectiveStacks = {
@@ -283,6 +293,37 @@ class HandHistory {
 			}
 		}
 		return orderedActivePositions
+	}
+
+	pioDescription() {
+		var typeToPIO = {
+			BET: "b",
+			CALL: "c",
+			CHECK: "c",
+			FOLD: "f",
+			RAISE: "b",
+		}
+		var streets = [FLOP, TURN, RIVER]
+		var nodes = ["r", "0"]
+		for (var i = 0; i < streets.length; i++){
+			var street = streets[i]
+			var actions = this.actions[street]
+			for (var a = 0; a < actions.length; a++) {
+				var action = actions[a]
+				var description = typeToPIO[action.type]
+				if (description == null) {
+					continue
+				}
+				if (description == "b") {
+					description = description.concat(
+						Math.round(action.amount).toString())
+				}
+				nodes.push(description)
+
+			}
+		}
+		return nodes.join(":")
+
 	}
 }
 
