@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>RNG</title>
+  <meta name="description" content="RNG">
+  <span class="parent">
+    <center>
+        <button onclick=generateRandomNumber() class="button" id="result">0</button>
+    </center>
+  </span>
+</head>
+
+<body>
+  <script>
+        function generateRandomNumber() {
+            elem = document.getElementById("result")
+            elem.innerHTML = Math.round(Math.random() * 99)
+        }
+  </script>
+    <style>
+        .button {
+          display: block;
+          width: 100%;
+          height: 50%;
+          border: none;
+          background-color: #4CAF50;
+          padding: 14px 28px;
+          font-size: 90px;
+          cursor: pointer;
+          text-align: center;
+        }
+        .parent{
+            width: 100%;
+            height:  100%;
+        }
+    </style>
+</body>
+</html>
