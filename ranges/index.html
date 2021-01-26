@@ -1,0 +1,101 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>RNG</title>
+  <meta name="description" content="Ranges">
+  <img src="./images/BTN_3B.png" id="image"></img>
+
+</head>
+
+<body>
+    <center>
+        <button onclick=setImage("BTN_3B.png")>BTN 3Bet</button>
+        <button onclick=setImage("SB_3B.png")>SB 3Bet</button>
+        <br/><br/>
+        BB Defense
+        <br/>
+        <button onclick=setImage("BB_vs_LJ.png")>vs LJ</button>
+        <button onclick=setImage("BB_vs_HJ.png")>vs HJ</button>
+        <button onclick=setImage("BB_vs_CO.png")>vs CO</button>
+        <button onclick=setImage("BB_vs_BTN.png")>vs BTN</button>
+        <button onclick=setImage("BB_vs_SB.png")>vs SB</button>
+    </center>
+    <br/><br/><br/>
+    <span class="parent">
+        <center>
+            <button onclick=generateRandomNumber() class="button" id="result">0</button>
+            <div id="bar"> </div>
+        </center>
+    </span>
+
+    <script>
+        function setImage(imageName ){
+            var path = "./images/".concat(imageName)
+            var elem = document.getElementById("image")
+            elem.src = path
+        }
+
+
+        function generateRandomNumber() {
+            var elem = document.getElementById("result")
+            var chosenNumber = Math.round(Math.random() * 99)
+            elem.innerHTML = chosenNumber
+
+            if (chosenNumber <= 10) {
+                elem.style.backgroundColor = "#37e3ff"
+            } else if (chosenNumber <= 20) {
+                elem.style.backgroundColor = "#58c4db"
+            } else if (chosenNumber <= 30) {
+                elem.style.backgroundColor = "#62bbd1"
+            } else if (chosenNumber <= 40) {
+                elem.style.backgroundColor = "#73abbe"
+            } else if (chosenNumber <= 50) {
+                elem.style.backgroundColor = "#839cad"
+            } else if (chosenNumber <= 60) {
+                elem.style.backgroundColor = "#958c9a"
+            } else if (chosenNumber <= 70) {
+                elem.style.backgroundColor = "#ad7681"
+            } else if (chosenNumber <= 80) {
+                elem.style.backgroundColor = "#bb6972"
+            } else if (chosenNumber <= 90) {
+                elem.style.backgroundColor = "#d1555b"
+            } else {
+                elem.style.backgroundColor = "#e54346"
+            }
+        }
+
+    </script>
+    <style>
+        #image {
+            width:100%;
+        }
+        .button {
+          display: block;
+          width: 100%;
+          height: 50%;
+          border: none;
+          background-color: #37e3ff;
+          padding: 14px 28px;
+          font-size: 90px;
+          cursor: pointer;
+          text-align: center;
+        }
+        .parent{
+            width: 100%;
+            height:  100%;
+        }
+        .bar-elem {
+            padding: 10px;
+            width:10px;
+            height:10px;
+            border: 10px;
+        }
+
+
+    </style>
+</body>
+</html>
