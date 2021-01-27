@@ -8,13 +8,13 @@
   <title>RNG</title>
   <meta name="description" content="Ranges">
   <img src="./images/RFI.png" id="image"></img>
+  <center><h4 id="title">RFI</h4></center>
 
 </head>
 
 <body>
     <center>
         <button onclick=setImage("RFI.png")>RFI</button>
-        <br/><br/>
         <button onclick=setImage("BTN_3B.png")>BTN 3Bet</button>
         <button onclick=setImage("SB_3B.png")>SB 3Bet</button>
         <br/><br/>
@@ -39,6 +39,11 @@
             var path = "./images/".concat(imageName)
             var elem = document.getElementById("image")
             elem.src = path
+
+            var title = imageName.replace("_", " ")
+            title = title.replace("_", " ")
+            title = title.replace(".png", "")
+            document.getElementById("title").innerHTML = title
         }
 
 
