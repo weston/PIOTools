@@ -153,7 +153,6 @@ function newGame() {
 
 function progressGame() {
 	if (INTERNAL_STATE["round"] == 5+1) {
-		newGame()
 		return
 	}
 	var nextCards = getChosenCards("next-cards")
