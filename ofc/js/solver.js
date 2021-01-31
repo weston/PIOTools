@@ -2,7 +2,7 @@ SUITS = ["c", "d", "h", "s"]
 RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
 INTERNAL_STATE = {}
 BLANK_CARD_SLOT = "_"
-
+BASE_URL = "http://ec2-35-167-176-184.us-west-2.compute.amazonaws.com/"
 
 function drawCardPicker(){
 	var parent = document.getElementById("card-picker")
@@ -216,7 +216,8 @@ function cardCount(cardList) {
 
 function queryWarren(playerCards, warrenCards, nextCards) {
 	const request = new XMLHttpRequest();
-	var url = "http://localhost:8080/?mode=advanced&type=evaulation&gametype=Pineapple&"
+	//var url = "http://localhost:8080/?mode=advanced&type=evaulation&gametype=Pineapple&"
+	var url = BASE_URL + "?mode=advanced&type=evaulation&gametype=Pineapple&"
 
 	var hand1 = cardsToWarrenParams(playerCards)
 	var hand2 = cardsToWarrenParams(warrenCards)

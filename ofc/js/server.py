@@ -3,8 +3,12 @@ from urllib.parse import urlparse
 import time
 import requests
 
-hostName = "localhost"
-serverPort = 8080
+hostName = "0.0.0.0"
+serverPort = 80
+
+# hostName = "localhost"
+# serverPort = 8080
+
 
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -27,7 +31,6 @@ class MyServer(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         self.wfile.write(bytes(response, "utf-8"))
-        print(response)
 
 
 def handle_request(params):
