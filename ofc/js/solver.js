@@ -171,11 +171,11 @@ function newGame() {
 	INTERNAL_STATE["round"] = 1
 	INTERNAL_STATE["hand_number"] += 1
 	if (!warrenIsDealer()) {
-		document.getElementById("left-dealer").innerHTML = "Dealer"
-		document.getElementById("right-dealer").innerHTML = "_"
-	} else {
 		document.getElementById("left-dealer").innerHTML = "_"
 		document.getElementById("right-dealer").innerHTML = "Dealer"
+	} else {
+		document.getElementById("left-dealer").innerHTML = "Dealer"
+		document.getElementById("right-dealer").innerHTML = "_"
 	}
 	drawCardPicker()
 	drawCardSlots("left")
