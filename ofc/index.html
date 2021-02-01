@@ -13,8 +13,10 @@
 </head>
 <body>
 	<center><div id="card-picker"></div></center>
-    <center>
-    </center>
+	<br/><br/>
+	<input type=button value="Next Street" id="next-button" onclick=progressGame()></input>
+	<input type=button value="New Hand" id="new-button" onclick=newGame()></input>
+
     <br/><br/>
 	<center>Round <span id="round-number">1</span></center>
 	<br/>
@@ -31,9 +33,6 @@
 		</div>
 	</div>
 	<br/><br/>
-	<center> <input type=button value="Next Street" id="next-button" onclick=progressGame()></input>
-	<br/><br/>
-	<center> <input type=button value="New Hand" id="new-button" onclick=newGame()></input>
 </body>
 <script>
 	main()

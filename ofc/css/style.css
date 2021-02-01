@@ -64,13 +64,17 @@
 }
 
 #next-button {
-	padding: 10px;
-	width: 200px;
+	padding: 5px;
+	width: 180px;
+	margin-left: 200px;
+
 }
 
 #new-button {
 	padding: 5px;
 	width: 180px;
+	margin-right: 200px;
+	float: right;
 }
 
 .no-select {
