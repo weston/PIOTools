@@ -34,7 +34,7 @@ class MyServer(BaseHTTPRequestHandler):
 
 
 def handle_request(params):
-    url = "https://www.playwarren.com/warren/bestplay"
+    url = "https://www.playwarren.com/warren/hint"
     headers = {"Cookie": COOKIE}
     return requests.get(
         url, headers=headers, params=params).text

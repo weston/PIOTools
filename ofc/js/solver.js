@@ -4,6 +4,12 @@ INTERNAL_STATE = {}
 BLANK_CARD_SLOT = "_"
 BASE_URL = "http://ec2-35-167-176-184.us-west-2.compute.amazonaws.com/"
 
+TILDE = 192
+ONE = 49
+TWO = 50
+THREE = 51
+
+
 function drawCardPicker(){
 	var parent = document.getElementById("card-picker")
 	parent.innerHTML = ""
@@ -41,6 +47,7 @@ function drawCardSlots(position) {
 			var cell = document.createElement("td")
 			cell.classList.add("card-slot-td")
 			cell.classList.add("no-select")
+			cell.classList.add("row-" + i)
 			cell.innerHTML = BLANK_CARD_SLOT
 			cell.onclick = selectSlot
 			row.appendChild(cell)
@@ -59,6 +66,7 @@ function drawNextCardSlots(numSlots) {
 		var cell = document.createElement("td")
 		cell.classList.add("card-slot-td")
 		cell.classList.add("no-select")
+		cell.classList.add("row-0")
 		cell.innerHTML = BLANK_CARD_SLOT
 		cell.onclick = selectSlot
 		row .appendChild(cell)
@@ -69,6 +77,24 @@ function drawNextCardSlots(numSlots) {
 
 
 function selectCard(event) {
+	if (pressedKeys[TILDE]) {
+		appendCard("next-cards", 0, event.srcElement)
+		deselectPicker()
+		return
+	} else if (pressedKeys[ONE]) {
+		appendCard("left-slots", 0, event.srcElement)
+		deselectPicker()
+		return
+	} else if (pressedKeys[TWO]) {
+		appendCard("left-slots", 1, event.srcElement)
+		deselectPicker()
+		return
+	} else if (pressedKeys[THREE]) {
+		appendCard("left-slots", 2, event.srcElement)
+		deselectPicker()
+		return
+	}
+
 	var shouldBeSelected = null
 	var elem = event.srcElement
 	if (elem.classList.contains("highlighted-card")) {
@@ -117,13 +143,19 @@ function selectSlot(event) {
 		}
 	}
 	var selectedCard = allSelected[0]
-	var rank = selectedCard.id[0]
-	var suit = selectedCard.id[1]
-	elem.innerHTML = selectedCard.id
-	elem.classList.add("suit-".concat(suit))
-	selectedCard.classList.remove("highlighted-card")
-	selectedCard.classList.add("dead-card")
-	selectedCard.innerHTML = BLANK_CARD_SLOT
+
+	cardToElem(selectedCard, elem)
+}
+
+
+function cardToElem(fromElem, toElem) {
+	var rank = fromElem.id[0]
+	var suit = fromElem.id[1]
+	toElem.innerHTML = fromElem.id
+	toElem.classList.add("suit-".concat(suit))
+	fromElem.classList.remove("highlighted-card")
+	fromElem.classList.add("dead-card")
+	fromElem.innerHTML = BLANK_CARD_SLOT
 }
 
 
@@ -135,6 +167,7 @@ function main() {
 
 
 function newGame() {
+	INTERNAL_STATE["dead_cards"] = []
 	INTERNAL_STATE["round"] = 1
 	INTERNAL_STATE["hand_number"] += 1
 	if (!warrenIsDealer()) {
@@ -183,7 +216,7 @@ function progressGame() {
 	// 		dead cards, suggestions
 
 	var warrenCards = getChosenCards("right-slots")
-	queryWarren(playerCards, warrenCards, nextCards)
+	queryWarren(playerCards, warrenCards, nextCards, [])
 	return
 }
 
@@ -213,6 +246,20 @@ function cardCount(cardList) {
 }
 
 
+function appendCard(parentID, rowNumber, selectedElem) {
+	var table = document.getElementById(parentID)
+	var cells = document.getElementsByClassName("row-" + rowNumber)
+	for (var i = 0; i < cells.length; i++) {
+		if (table.contains(cells[i])) {
+			if (cells[i].innerHTML == BLANK_CARD_SLOT){
+				cardToElem(selectedElem, cells[i])
+				return
+			}
+		}
+	}
+}
+
+
 function queryWarren(playerCards, warrenCards, nextCards) {
 	const request = new XMLHttpRequest();
 	//var url = "http://localhost:8080/?mode=advanced&type=evaulation&gametype=Pineapple&"
@@ -222,14 +269,18 @@ function queryWarren(playerCards, warrenCards, nextCards) {
 	var hand2 = cardsToWarrenParams(warrenCards)
 	var toPlay = cardsToWarrenParams(nextCards)
 
+	url = url.concat("next=warren1" + "&")
 	url = url.concat("hand1=" + hand1 + "&")
 	url = url.concat("hand2=" + hand2 + "&")
-	url = url.concat("toplay=" + toPlay)
-
+	url = url.concat("toplay=" + toPlay + "&")
+	if (INTERNAL_STATE["dead_cards"].length > 0) {
+		url = url.concat("deadcards=" + INTERNAL_STATE["dead_cards"].join(","))
+	}
+	console.log(url)
 	request.open("GET", url);
 	request.send();
 	request.onreadystatechange = (e) => {
-		handleWarrenResponse(request.responseText)
+		handleWarrenResponse(request.responseText, toPlay)
 	}
 }
 
@@ -254,12 +305,23 @@ function cardsToWarrenParams(cards) {
 }
 
 
-function handleWarrenResponse(responseText){
-	var suggestions = responseText.split(",")
-	if (suggestions.length != 26){
+function handleWarrenResponse(responseText, toPlay){
+	try {
+        var data = JSON.parse(responseText);
+    } catch(e) {
+		return
+	}
+	if (warrenIsDealer()) {
+		var handKey = "hand1"
+	} else {
+		var handKey = "hand2"
+	}
+	var suggestions = data["calcs"][0][handKey]
+	if (suggestions.length != 13){
 		console.log("Unparseable warren response")
 		return
 	}
+	INTERNAL_STATE["dead_cards"] = INTERNAL_STATE["dead_cards"].concat(toPlay.split(","))
 	var orderedCards = []
 	for (var s = 0; s < SUITS.length; s++) {
 		var suit = SUITS[s]
@@ -276,15 +338,8 @@ function handleWarrenResponse(responseText){
 			targetCells.push(cells[i])
 		}
 	}
-	if (suggestions.length != 2*targetCells.length) {
-		console.log("Something went wrong")
-		return
-	}
 	var warrenCardCount = 0
 	var offset = 0
-	if (!warrenIsDealer()) {
-		offset = 13
-	}
 	for (var i = 0; i < targetCells.length; i++) {
 		var cell= targetCells[i]
 		var handString = BLANK_CARD_SLOT
@@ -312,3 +367,8 @@ function handleWarrenResponse(responseText){
 function warrenIsDealer() {
 	return INTERNAL_STATE["hand_number"] % 2 == 0
 }
+
+
+pressedKeys = {};
+window.onkeyup = function(e) { pressedKeys[e.keyCode] = false; }
+window.onkeydown = function(e) { pressedKeys[e.keyCode] = true; }
