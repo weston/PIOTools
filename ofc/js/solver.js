@@ -306,6 +306,19 @@ function cardsToWarrenParams(cards) {
 }
 
 
+function getHighestEquityAction(parsedData, equityKey, handKey) {
+	var bestEquity = null
+	var best = null
+	for (var i = 0; i < parsedData["calcs"].length; i++) {
+		var action = parsedData["calcs"][i]
+		if (bestEquity == null || Number(action[equityKey]) > bestEquity) {
+			best = action[handKey]
+			bestEquity = Number(action[equityKey])
+		}
+	}
+	return best
+}
+
 function handleWarrenResponse(responseText, toPlay){
 	try {
         var data = JSON.parse(responseText);
@@ -314,10 +327,12 @@ function handleWarrenResponse(responseText, toPlay){
 	}
 	if (warrenIsDealer()) {
 		var handKey = "hand1"
+		var equityKey = "equity1"
 	} else {
 		var handKey = "hand2"
+		var equityKey = "equity2"
 	}
-	var suggestions = data["calcs"][0][handKey]
+	var suggestions = getHighestEquityAction(data, equityKey, handKey)
 	if (suggestions.length != 13){
 		console.log("Unparseable warren response")
 		return
