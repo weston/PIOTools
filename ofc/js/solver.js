@@ -77,33 +77,34 @@ function drawNextCardSlots(numSlots) {
 
 
 function selectCard(event) {
+	var elem = event.srcElement
+	if (elem.classList.contains("dead-card")) {
+		return
+	}
+
 	if (pressedKeys[TILDE]) {
-		appendCard("next-cards", 0, event.srcElement)
+		appendCard("next-cards", 0, elem)
 		deselectPicker()
 		return
 	} else if (pressedKeys[ONE]) {
-		appendCard("left-slots", 0, event.srcElement)
+		appendCard("left-slots", 0, elem)
 		deselectPicker()
 		return
 	} else if (pressedKeys[TWO]) {
-		appendCard("left-slots", 1, event.srcElement)
+		appendCard("left-slots", 1, elem)
 		deselectPicker()
 		return
 	} else if (pressedKeys[THREE]) {
-		appendCard("left-slots", 2, event.srcElement)
+		appendCard("left-slots", 2, elem)
 		deselectPicker()
 		return
 	}
 
 	var shouldBeSelected = null
-	var elem = event.srcElement
 	if (elem.classList.contains("highlighted-card")) {
 		shouldBeSelected = false
 	} else {
 		shouldBeSelected = true
-	}
-	if (elem.classList.contains("dead-card")){
-		shouldBeSelected = false
 	}
 
 	deselectPicker()
