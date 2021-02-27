@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
 import time
 import requests
+import json
 
 hostName = "0.0.0.0"
 serverPort = 80
@@ -25,19 +26,23 @@ class MyServer(BaseHTTPRequestHandler):
                 else:
                     print(parts)
         base_path = self.path.split("&")[0]
-        response = handle_request(params)
+        if "picture_voting" in base_path:
+            response = handle_pic_request(params)
+            response = json.dumps(response)
+        else:
+            response = handle_request(params)
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         self.wfile.write(bytes(response, "utf-8"))
 
-
 def handle_request(params):
     url = "https://www.playwarren.com/warren/hint"
     headers = {"Cookie": COOKIE}
     return requests.get(
         url, headers=headers, params=params).text
+
 
 
 def run_server():
@@ -55,11 +60,57 @@ def run_server():
 
 
 
+"""
+This stuff is not for warren
+"""
+
+FILE = "/home/ec2-user/data.json"
 
 
+class FileMap(object):
+    def __init__(self, path):
+        self.path = path
+
+    def read(self):
+        f = open(self.path, "r")
+        data = json.loads(f.read())
+        f.close()
+        return data
+
+    def set(self, new_data):
+        f = open(self.path, "w")
+        f.write(json.dumps(new_data))
+        f.close()
+
+def update_map(key, yes_or_no=None):
+    fm = FileMap(FILE)
+    data = fm.read()
+    if key not in data:
+        data[key] = {
+            "yes": 0,
+            "no": 0,
+        }
+    if yes_or_no:
+        data[key][yes_or_no] += 1
+    fm.set(data)
 
 
+def handle_pic_request(params):
+    operation = params.get("operation")
+    pic_id = params.get("id")
+    if not pic_id:
+        return FileMap(FILE).read()
+    fm = FileMap(FILE)
+    if operation in ["yes", "no"]:
+        update_map(pic_id, operation)
+    if operation == "new":
+        update_map(pic_id)
+    return FileMap(FILE).read()
 
+
+"""
+End non-warren stuff
+"""
 
 
 
