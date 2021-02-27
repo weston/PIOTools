@@ -68,6 +68,9 @@
             var title = imageName.replace("_", " ")
             title = title.replace("_", " ")
             title = title.replace(".png", "")
+            if (title != "RFI") {
+            	title += "%"
+            }
             document.getElementById("title").innerHTML = title
         }
 
