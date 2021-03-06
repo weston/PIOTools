@@ -37,12 +37,12 @@ class MyServer(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(bytes(response, "utf-8"))
 
+
 def handle_request(params):
     url = "https://www.playwarren.com/warren/hint"
     headers = {"Cookie": COOKIE}
     return requests.get(
         url, headers=headers, params=params).text
-
 
 
 def run_server():

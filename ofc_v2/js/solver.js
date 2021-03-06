@@ -149,6 +149,18 @@ function selectSlot(event) {
 }
 
 
+function killCardInPicker(cardString) {
+	var cells = document.getElementsByClassName("card-picker-td")
+	for (var i = 0; i < cells.length; i++) {
+		var cell = cells[i]
+		if (cell.innerHTML == cardString) {
+			cell.classList.add("dead-card")
+			cell.innerHTML = BLANK_CARD_SLOT
+		}
+	}
+}
+
+
 function cardToElem(fromElem, toElem) {
 	var rank = fromElem.id[0]
 	var suit = fromElem.id[1]
@@ -161,23 +173,12 @@ function cardToElem(fromElem, toElem) {
 
 
 function main() {
-	// Start with button on the left
-	INTERNAL_STATE["hand_number"] = 0
 	newGame()
 }
 
 
 function newGame() {
 	INTERNAL_STATE["dead_cards"] = []
-	INTERNAL_STATE["round"] = 1
-	INTERNAL_STATE["hand_number"] += 1
-	if (!warrenIsDealer()) {
-		document.getElementById("left-dealer").innerHTML = "_"
-		document.getElementById("right-dealer").innerHTML = "Dealer"
-	} else {
-		document.getElementById("left-dealer").innerHTML = "Dealer"
-		document.getElementById("right-dealer").innerHTML = "_"
-	}
 	drawCardPicker()
 	drawCardSlots("left")
 	drawCardSlots("right")
@@ -186,40 +187,35 @@ function newGame() {
 
 
 function progressGame() {
-	if (INTERNAL_STATE["round"] == 5+1) {
-		return
-	}
 	var nextCards = getChosenCards("next-cards")
 	var playerCards = getChosenCards("left-slots")
-	if (cardCount(nextCards) != nextCards.length) {
-		console.log("Must fill all of the next card slots")
-		return
-	}
-	// After placing their cards, how many cards do we expext
-	// to be on the button's board on the "nth" round
-	// For not on the button, it lags behind by one slot
-	// INTERNAL_STATE["round"] is 1 indexed
-	var roundToButtonCardCount = [0, 5, 7, 9, 11, 13]
-	var round = INTERNAL_STATE["round"]
-	var expectedCards = null
-	if (INTERNAL_STATE["hand_number"] % 2 == 1) {
-		expectedCards = roundToButtonCardCount[round]
-	} else {
-		expectedCards = roundToButtonCardCount[round-1]
-	}
-	if (cardCount(playerCards) != expectedCards) {
-		console.log("Unexpected selected card count")
-		return
-	}
-	// State is valid here. Send state to warren
-	// Parse response
-	// Update screen accordingly
-	// 		dead cards, suggestions
-
 	var warrenCards = getChosenCards("right-slots")
-	queryWarren(playerCards, warrenCards, nextCards, [])
-	return
+	if (cardCount(nextCards) != nextCards.length) {
+		displayError("Must fill all of the next card slots")
+		return
+	}
+	var validCounts = {
+		0: [0],
+		5: [0, 5],
+		7: [5, 7],
+		9: [7, 9],
+		11: [9, 11],
+		13: [11],
+	}
+	if (!(cardCount(playerCards) in validCounts)) {
+		displayError("Invalid number of cards in the left slots")
+		return
+	}
+	if (!(validCounts[cardCount(playerCards)].includes(cardCount(warrenCards)))) {
+		displayError("Invalid number of cards in the right slots")
+		return
+	}
+	// Dealer acts last, so if they have more cards than us, Warren must
+	// be in the dealer position.
+	var warrenIsDealer = cardCount(warrenCards) > cardCount(playerCards)
+	queryWarren(playerCards, warrenCards, nextCards, warrenIsDealer)
 }
+
 
 
 function getChosenCards(parentID){
@@ -261,10 +257,9 @@ function appendCard(parentID, rowNumber, selectedElem) {
 }
 
 
-function queryWarren(playerCards, warrenCards, nextCards) {
+function queryWarren(playerCards, warrenCards, nextCards, warrenIsDealer) {
 	const request = new XMLHttpRequest();
-	//var url = "http://localhost:8080/?mode=advanced&type=evaulation&gametype=Pineapple&"
-	var url = BASE_URL + "?mode=advanced&type=evaulation&gametype=Pineapple&"
+	var url = BASE_URL + "?mode=advanced&type=evaluation&gametype=Pineapple&"
 
 	var hand1 = cardsToWarrenParams(playerCards)
 	var hand2 = cardsToWarrenParams(warrenCards)
@@ -277,11 +272,10 @@ function queryWarren(playerCards, warrenCards, nextCards) {
 	if (INTERNAL_STATE["dead_cards"].length > 0) {
 		url = url.concat("deadcards=" + INTERNAL_STATE["dead_cards"].join(","))
 	}
-	console.log(url)
 	request.open("GET", url);
 	request.send();
 	request.onreadystatechange = (e) => {
-		handleWarrenResponse(request.responseText, toPlay)
+		handleWarrenResponse(request.responseText, toPlay, warrenIsDealer)
 	}
 }
 
@@ -319,24 +313,27 @@ function getHighestEquityAction(parsedData, equityKey, handKey) {
 	return best
 }
 
-function handleWarrenResponse(responseText, toPlay){
+function handleWarrenResponse(responseText, toPlay, warrenIsDealer){
 	try {
         var data = JSON.parse(responseText);
     } catch(e) {
+		console.log("BAD WARREN RESPONSE")
+		console.log(responseText)
 		return
 	}
-	if (warrenIsDealer()) {
-		var handKey = "hand1"
-		var equityKey = "equity1"
-	} else {
+	if (warrenIsDealer) {
 		var handKey = "hand2"
 		var equityKey = "equity2"
+	} else {
+		var handKey = "hand1"
+		var equityKey = "equity1"
 	}
 	var suggestions = getHighestEquityAction(data, equityKey, handKey)
 	if (suggestions.length != 13){
 		console.log("Unparseable warren response")
 		return
 	}
+	console.log(suggestions)
 	INTERNAL_STATE["dead_cards"] = INTERNAL_STATE["dead_cards"].concat(toPlay.split(","))
 	var orderedCards = []
 	for (var s = 0; s < SUITS.length; s++) {
@@ -368,20 +365,7 @@ function handleWarrenResponse(responseText, toPlay){
 		cell.classList.add("suit-".concat(handString[1]))
 		warrenCardCount += 1
 	}
-	INTERNAL_STATE["round"] = {
-		5: 2,
-		7: 3,
-		9: 4,
-		11: 5,
-		13: 6,
-	}[warrenCardCount]
-	var roundToNextCardSlots = [null, 5, 3, 3, 3, 3, 5, 5]
-	drawNextCardSlots(roundToNextCardSlots[INTERNAL_STATE["round"]])
-	document.getElementById("round-number").innerHTML = INTERNAL_STATE["round"]
-}
-
-function warrenIsDealer() {
-	return INTERNAL_STATE["hand_number"] % 2 == 0
+	drawNextCardSlots(3)
 }
 
 
@@ -407,6 +391,7 @@ function autoUpdate() {
 		}
 		for (var i = 0; i < data.length; i++) {
 			typeToCardObjects[data[i]["type"]].push(data[i])
+			killCardInPicker(data[i]["card"])
 		}
 
 		var typeToParentID = {
@@ -415,21 +400,10 @@ function autoUpdate() {
 			"hero_main": "right-slots",
 			"hero_new": "next-cards",
 		}
-
-		var parent = document.getElementById("right-slots")
-		var cells = document.getElementsByClassName("card-slot-td")
-		var targetCells = []
-		for (var i = 0; i < cells.length; i++) {
-			if (parent.contains(cells[i])) {
-				targetCells.push(cells[i])
-			}
-		}
 		for (var k in typeToCardObjects) {
 			fillCardSlots(typeToParentID[k], typeToCardObjects[k])
 		}
-
 	}
-
 }
 
 
@@ -457,6 +431,9 @@ function fillCardSlots(parentID, cardObjects) {
 	}
 }
 
+function displayError(errorString) {
+	console.log(errorString)
+}
 
 pressedKeys = {};
 window.onkeyup = function(e) { pressedKeys[e.keyCode] = false; }
