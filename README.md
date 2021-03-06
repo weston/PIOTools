@@ -36,8 +36,6 @@ piotools.com communicates with a proxy server over http, which is by default dis
 ## 3. Download/Install/Update the screen scraper.
 * Open the Command Prompt again and run `curl https://raw.githubusercontent.com/weston/PIOTools/master/ofc_v2/ScreenScraper/install.sh > file.sh && file.sh`
 
-You can run the last two commands at any point in time to update the script.
-
 TODO: Include instructions for a virtualenv (optional)
 
 ## 4. Run the screen scraper.
