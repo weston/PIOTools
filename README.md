@@ -40,7 +40,7 @@ TODO: Include instructions for a virtualenv (optional)
 
 ## 4. Run the screen scraper.
 * Close and reopen the Command Prompt
-* Open pppoker on BlueStacks
+* Open pppoker on BlueStacks (Use Samsung Galaxy S20 Ultra)
 * `cd PIOTools/ofc_v2/ScreenScraper`
 * `python main.py`
 
