@@ -36,7 +36,9 @@ piotools.com communicates with a proxy server over http, which is by default dis
 ## 3. Download and install the screen scraper.
 * Open the Command Prompt again and run `git clone https://github.com/weston/PIOTools`
 * `cd PIOTools/ofc_v2/ScreenScraper`
-* `pip install -r requirements.txt`
+* `install.sh`
+
+You can run the last two commands at any point in time to update the script.
 
 TODO: Include instructions for a virtualenv (optional)
 
@@ -44,5 +46,5 @@ TODO: Include instructions for a virtualenv (optional)
 * Close and reopen the Command Prompt
 * Open pppoker on BlueStacks
 * `cd PIOTools/ofc_v2/ScreenScraper`
-* `git pull`
+* `python main.py`
 * `python main.py`
