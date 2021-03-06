@@ -44,4 +44,5 @@ TODO: Include instructions for a virtualenv (optional)
 * Close and reopen the Command Prompt
 * Open pppoker on BlueStacks
 * `cd PIOTools/ofc_v2/ScreenScraper`
+* `git pull`
 * `python main.py`
