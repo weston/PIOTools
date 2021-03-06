@@ -28,7 +28,7 @@ operable program or batch file.
 ```
 
 ## 2. Allow Chrome to talk to the external server
-piotools.com communicates with a proxy server over http, which is by default disallowed (in favor of https). To allow Chroms to communicate over http on piotools.com
+piotools.com communicates with a proxy server over http, which is by default disallowed (in favor of https). To allow Chrome to communicate over http on piotools.com
 * Go to piotools.com
 * Click on the lock to the left of the address bar and click `Site Settings`
 * Scroll down to `Insecure Content` and make sure that it is set to `Allow`
@@ -36,7 +36,7 @@ piotools.com communicates with a proxy server over http, which is by default dis
 ## 3. Download and install the screen scraper.
 * Open the Command Prompt again and run `git clone https://github.com/weston/PIOTools`
 * `cd PIOTools/ofc_v2/ScreenScraper`
-* pip install -r requirements.txt
+* `pip install -r requirements.txt`
 
 TODO: Include instructions for a virtualenv (optional)
 
