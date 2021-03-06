@@ -190,7 +190,7 @@ function progressGame() {
 	var nextCards = getChosenCards("next-cards")
 	var playerCards = getChosenCards("left-slots")
 	var warrenCards = getChosenCards("right-slots")
-	if (cardCount(nextCards) != nextCards.length) {
+	if (cardCount(nextCards) != 3 && cardCount(nextCards) != 5) {
 		displayError("Must fill all of the next card slots")
 		return
 	}
