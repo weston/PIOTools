@@ -47,4 +47,4 @@ TODO: Include instructions for a virtualenv (optional)
 * Open pppoker on BlueStacks
 * `cd PIOTools/ofc_v2/ScreenScraper`
 * `python main.py`
-* `python main.py`
+
