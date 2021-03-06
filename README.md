@@ -21,7 +21,7 @@ C:\Users\wmizu>pip --version
 pip 10.0.1 from c:\users\wmizu\appdata\local\programs\python\python36\lib\site-packages\pip (python 3.6)
 ```
 
-If your output differs slightly for these one, that should be fine. As long as it doesn't say something like:
+If your output differs slightly for these ones, that should be fine. As long as it doesn't say something like:
 ```
 'pip' is not recognized as an internal or external command,
 operable program or batch file.
