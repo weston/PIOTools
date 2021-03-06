@@ -212,7 +212,7 @@ function progressGame() {
 	}
 	// Dealer acts last, so if they have more cards than us, Warren must
 	// be in the dealer position.
-	var warrenIsDealer = cardCount(warrenCards) > cardCount(playerCards)
+	var warrenIsDealer = cardCount(playerCards) > cardCount(warrenCards)
 	queryWarren(playerCards, warrenCards, nextCards, warrenIsDealer)
 }
 
@@ -314,6 +314,7 @@ function getHighestEquityAction(parsedData, equityKey, handKey) {
 }
 
 function handleWarrenResponse(responseText, toPlay, warrenIsDealer){
+	console.log(warrenIsDealer)
 	try {
         var data = JSON.parse(responseText);
     } catch(e) {
@@ -328,12 +329,12 @@ function handleWarrenResponse(responseText, toPlay, warrenIsDealer){
 		var handKey = "hand1"
 		var equityKey = "equity1"
 	}
+
 	var suggestions = getHighestEquityAction(data, equityKey, handKey)
 	if (suggestions.length != 13){
 		console.log("Unparseable warren response")
 		return
 	}
-	console.log(suggestions)
 	INTERNAL_STATE["dead_cards"] = INTERNAL_STATE["dead_cards"].concat(toPlay.split(","))
 	var orderedCards = []
 	for (var s = 0; s < SUITS.length; s++) {
