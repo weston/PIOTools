@@ -1,4 +1,5 @@
 === Installing the software ===
+
 We need to install some libraries to run the script that looks at the
 BlueStacks pixels and sends then to the piotools.
 
