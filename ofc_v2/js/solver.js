@@ -183,6 +183,7 @@ function newGame() {
 	drawCardSlots("left")
 	drawCardSlots("right")
 	drawNextCardSlots(5)
+	displayError("")
 }
 
 
@@ -191,7 +192,7 @@ function progressGame() {
 	var playerCards = getChosenCards("left-slots")
 	var warrenCards = getChosenCards("right-slots")
 	if (cardCount(nextCards) != 3 && cardCount(nextCards) != 5) {
-		displayError("Must fill all of the next card slots")
+		displayError("Not enough new cards")
 		return
 	}
 	var validCounts = {
@@ -269,6 +270,7 @@ function queryWarren(playerCards, warrenCards, nextCards, warrenIsDealer) {
 	url = url.concat("hand1=" + hand1 + "&")
 	url = url.concat("hand2=" + hand2 + "&")
 	url = url.concat("toplay=" + toPlay + "&")
+	url = url.concat("accessKey=" + getPassword() + "&")
 	if (INTERNAL_STATE["dead_cards"].length > 0) {
 		url = url.concat("deadcards=" + INTERNAL_STATE["dead_cards"].join(","))
 	}
@@ -314,12 +316,17 @@ function getHighestEquityAction(parsedData, equityKey, handKey) {
 }
 
 function handleWarrenResponse(responseText, toPlay, warrenIsDealer){
-	console.log(warrenIsDealer)
+	if (responseText.length == 0) {
+		return
+	}
 	try {
         var data = JSON.parse(responseText);
     } catch(e) {
-		console.log("BAD WARREN RESPONSE")
-		console.log(responseText)
+		console.log("Can't parse response from Warren" + responseText)
+		return
+	}
+	if ("error" in data) {
+		displayError(data["error"])
 		return
 	}
 	if (warrenIsDealer) {
@@ -332,7 +339,7 @@ function handleWarrenResponse(responseText, toPlay, warrenIsDealer){
 
 	var suggestions = getHighestEquityAction(data, equityKey, handKey)
 	if (suggestions.length != 13){
-		console.log("Unparseable warren response")
+		displayError("Can't understand Warren")
 		return
 	}
 	INTERNAL_STATE["dead_cards"] = INTERNAL_STATE["dead_cards"].concat(toPlay.split(","))
@@ -367,6 +374,7 @@ function handleWarrenResponse(responseText, toPlay, warrenIsDealer){
 		warrenCardCount += 1
 	}
 	drawNextCardSlots(3)
+	displayError("")
 }
 
 
@@ -432,9 +440,16 @@ function fillCardSlots(parentID, cardObjects) {
 	}
 }
 
+
 function displayError(errorString) {
 	console.log(errorString)
+	document.getElementById("errors").innerHTML = errorString
 }
+
+function getPassword() {
+	return document.getElementById("code").innerHTML
+}
+
 
 pressedKeys = {};
 window.onkeyup = function(e) { pressedKeys[e.keyCode] = false; }
