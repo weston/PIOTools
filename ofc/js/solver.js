@@ -277,6 +277,11 @@ function queryWarren(playerCards, warrenCards, nextCards, warrenIsDealer) {
 	request.open("GET", url);
 	request.send();
 	request.onreadystatechange = (e) => {
+		if (request.readyState == 4 && request.status == 0) {
+			displayError("Cannot connect to Warren. Contact Weston.")
+			return
+    	}
+
 		handleWarrenResponse(request.responseText, toPlay, warrenIsDealer)
 	}
 }
@@ -315,6 +320,7 @@ function getHighestEquityAction(parsedData, equityKey, handKey) {
 	return best
 }
 
+
 function handleWarrenResponse(responseText, toPlay, warrenIsDealer){
 	if (responseText.length == 0) {
 		return
@@ -323,6 +329,9 @@ function handleWarrenResponse(responseText, toPlay, warrenIsDealer){
         var data = JSON.parse(responseText);
     } catch(e) {
 		console.log("Can't parse response from Warren" + responseText)
+		if (responseText.includes("disable track track_pageview track_links track")) {
+			displayError("Cookie is expired. Contact Weston")
+		}
 		return
 	}
 	if ("error" in data) {
@@ -384,6 +393,9 @@ function autoUpdate() {
 	request.open("GET", url);
 	request.send();
 	request.onreadystatechange = (e) => {
+		if (request.readyState == 4 && request.status == 0) {
+			displayError("Cannot connect to card reader. Try restarting it.")
+    	}
 		if (request.responseText.length == 0){
 			return
 		}
