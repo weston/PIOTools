@@ -34,7 +34,7 @@ piotools.com communicates with a proxy server over http, which is by default dis
 * Scroll down to `Insecure Content` and make sure that it is set to `Allow`
 
 ## 3. Download/Install/Update the screen scraper.
-* Open the Command Prompt again and run `curl https://raw.githubusercontent.com/weston/PIOTools/master/ofc_v2/ScreenScraper/install.sh > file.sh && file.sh`
+* Open the Command Prompt again and run `curl https://raw.githubusercontent.com/weston/PIOTools/master/ofc_v2/ScreenScraper/install.sh > f.sh && f.sh`
 
 TODO: Include instructions for a virtualenv (optional)
 
