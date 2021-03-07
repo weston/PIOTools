@@ -447,7 +447,7 @@ function displayError(errorString) {
 }
 
 function getPassword() {
-	return document.getElementById("code").innerHTML
+	return document.getElementById("code").value
 }
 
 
