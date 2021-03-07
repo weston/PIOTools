@@ -9,31 +9,31 @@
   <script src="js/solver.js"></script>
 
   <title>OFC Training</title>
-  <center><h3>OFC Training v0.0.9</h3></center>
+  <center><h3>OFC Training v0.2.3</h3></center>
 </head>
 <body>
+	<center><input type="text" id="code"></input></center>
+	<br/>
 	<center><div id="card-picker"></div></center>
 	<br/><br/>
 	<center>
-	<input type=button value="Next Street" id="next-button" onclick=progressGame()></input>
+	<input type=button value="Read Cards" id="load-button" onclick=autoUpdate()></input>
+	<input type=button value="Solve" id="next-button" onclick=progressGame()></input>
 	<input type=button value="New Hand" id="new-button" onclick=newGame()></input>
 	</center>
     <br/><br/>
-	<center>Round <span id="round-number">1</span></center>
-	<br/>
 	<center><div id="next-cards"></div></center>
 	<br/><br/>
 	<div class="row">
   		<div class="column" id="left-column">
-			<center><h3 id="left-dealer">asdf</h3></center>
 			<center><div id="left-slots"></div></center>
 		</div>
   		<div class="column" id="right-column">
-			<center><h3 id="right-dealer"></h3></center>
 			<center><div id="right-slots"></div></center>
 		</div>
 	</div>
 	<br/><br/>
+	<center><div id="errors"></div></center>
 </body>
 <script>
 	main()

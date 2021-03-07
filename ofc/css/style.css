@@ -73,6 +73,14 @@
 	width: 180px;
 }
 
+#load-button {
+	padding: 5px;
+	width: 180px;
+}
+#errors {
+	color: red;
+}
+
 .no-select {
 	-webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
