@@ -33,18 +33,14 @@ piotools.com communicates with a proxy server over http, which is by default dis
 * Click on the lock to the left of the address bar and click `Site Settings`
 * Scroll down to `Insecure Content` and make sure that it is set to `Allow`
 
-## 3. Download and install the screen scraper.
-* Open the Command Prompt again and run `git clone https://github.com/weston/PIOTools`
-* `cd PIOTools/ofc_v2/ScreenScraper`
-* `install.sh`
-
-You can run the last two commands at any point in time to update the script.
+## 3. Download/Install/Update the screen scraper.
+* Open the Command Prompt again and run `curl https://raw.githubusercontent.com/weston/PIOTools/master/ofc_v2/ScreenScraper/install.sh > file.sh && file.sh`
 
 TODO: Include instructions for a virtualenv (optional)
 
 ## 4. Run the screen scraper.
 * Close and reopen the Command Prompt
-* Open pppoker on BlueStacks
+* Open pppoker on BlueStacks (Use Samsung Galaxy S20 Ultra)
 * `cd PIOTools/ofc_v2/ScreenScraper`
 * `python main.py`
 
