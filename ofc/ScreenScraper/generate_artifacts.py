@@ -32,7 +32,6 @@ COORDS = {
 	"hero_new": configs.HERO_NEW,
 	"villain_left": configs.VILLAIN_LEFT,
 	"villain_right": configs.VILLAIN_RIGHT,
-	"discard": configs.DISCARD,
 }
 """
 {
@@ -49,6 +48,11 @@ COORDS = {
 		left borders.
 	python generate_artifacts.py discard 12 18
 }
+
+Hero: Bottom 1, 2
+	  Middle 0, 1, 2
+	  top 1
+      
 """
 def main():
 	hwnd = get_hwnd_for_title("BlueStacks")
