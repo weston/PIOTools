@@ -9,7 +9,6 @@
   <meta name="description" content="Ranges">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <img src="./images/RFI.png" id="image"></img>
-  <center><h4 id="title">RFI</h4></center>
 </head>
 
 <body>
@@ -45,6 +44,20 @@
 		<button class="btn btn-dark" onclick=setImage("BB_vs_3x25.png")>vs 25%</button>
 		<button class="btn btn-dark" onclick=setImage("BB_vs_3x35.png")>vs 35%</button>
 		<button class="btn btn-dark" onclick=setImage("BB_vs_3x50.png")>vs 50%</button>
+        <br/><br/>
+        VS 3bet
+        <br/>
+        <button class="btn btn-danger" onclick=setImage("LJ_vs_IP.png")>LJ vs IP</button>
+        <button class="btn btn-danger" onclick=setImage("LJ_vs_OOP.png")>LJ vs OOP</button>
+        <button class="btn btn-info" onclick=setImage("HJ_vs_IP.png")>HJ vs IP</button>
+        <button class="btn btn-info" onclick=setImage("HJ_vs_OOP.png")>HJ vs OOP</button>
+        <br/>
+        <br/>
+        <button class="btn btn-primary" onclick=setImage("CO_vs_IP.png")>CO vs IP</button>
+        <button class="btn btn-primary" onclick=setImage("CO_vs_OOP.png")>CO vs OOP</button>
+        <button class="btn btn-success" onclick=setImage("BTN_vs_OOP.png")>BTN vs OOP</button>
+        <button class="btn btn-warning" onclick=setImage("SB_vs_IP.png")>SB vs IP</button>
+
 
     </center>
     <br/>
@@ -67,7 +80,6 @@
             if (title != "RFI") {
             	title += "%"
             }
-            document.getElementById("title").innerHTML = title
         }
 
 
@@ -101,17 +113,21 @@
 
     </script>
     <style>
+        .btn {
+            padding-top: 2px;
+            padding-bottom:  2px;
+        }
         #image {
             width:100%;
         }
         .button {
           display: block;
           width: 100%;
-          height: 50%;
+          height: 80px;
           border: none;
           background-color: #37e3ff;
           padding: 14px 28px;
-          font-size: 90px;
+          font-size: 45px;
           cursor: pointer;
           text-align: center;
         }
