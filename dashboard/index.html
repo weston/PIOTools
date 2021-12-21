@@ -5,136 +5,112 @@
 <head>
   <meta charset="utf-8">
 
-  <title>RNG</title>
+  <title>6max Ranges</title>
   <meta name="description" content="Ranges">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <img src="./images/RFI.png" id="image"></img>
 </head>
 
 <body>
-    <center>
-        <button class="btn btn-danger" onclick=setImage("RFI.png")>RFI</button>
-		<button class="btn btn-info" onclick=setImage("HJ_vs_16.png")>HJ vs 16%</button>
-		<button class="btn btn-info" onclick=setImage("CO_vs_16.png")>CO vs 16%</button>
-		<button class="btn btn-info" onclick=setImage("CO_vs_19.png")>CO vs 19%</button>
-        <br/><br/>
-		<button class="btn btn-primary" onclick=setImage("BTN_vs_16.png")>BTN vs 16%</button>
-		<button class="btn btn-primary" onclick=setImage("BTN_vs_19.png")>BTN vs 19%</button>
-		<button class="btn btn-primary" onclick=setImage("BTN_vs_25.png")>BTN vs 25%</button>
-        <br/><br/>
-		<button class="btn btn-success" onclick=setImage("SB_vs_16.png")>SB vs 16%</button>
-		<button class="btn btn-success" onclick=setImage("SB_vs_19.png")>SB vs 19%</button>
-		<button class="btn btn-success" onclick=setImage("SB_vs_25.png")>SB vs 25%</button>
-		<button class="btn btn-success" onclick=setImage("SB_vs_40.png")>SB vs 40%</button>
-        <br/><br/>
-        BB vs 2.5x RFI
-        <br/>
-        <button class="btn btn-warning" onclick=setImage("BB_vs_2.5x14.png")>vs 14%</button>
-		<button class="btn btn-warning" onclick=setImage("BB_vs_2.5x19.png")>vs 19%</button>
-		<button class="btn btn-warning" onclick=setImage("BB_vs_2.5x25.png")>vs 25%</button>
-		<button class="btn btn-warning" onclick=setImage("BB_vs_2.5x35.png")>vs 35%</button>
-		<button class="btn btn-warning" onclick=setImage("BB_vs_2.5x41.png")>vs 41%</button>
-		<button class="btn btn-warning" onclick=setImage("BB_vs_2.5x50.png")>vs 50%</button>
-		<br/><br/>
-		BB vs 3x RFI
-        <br/>
-        <button class="btn btn-dark" onclick=setImage("BB_vs_3x14.png")>vs 14%</button>
-		<button class="btn btn-dark" onclick=setImage("BB_vs_3x16.png")>vs 16%</button>
-		<button class="btn btn-dark" onclick=setImage("BB_vs_3x19.png")>vs 19%</button>
-		<button class="btn btn-dark" onclick=setImage("BB_vs_3x25.png")>vs 25%</button>
-		<button class="btn btn-dark" onclick=setImage("BB_vs_3x35.png")>vs 35%</button>
-		<button class="btn btn-dark" onclick=setImage("BB_vs_3x50.png")>vs 50%</button>
-        <br/><br/>
-        VS 3bet
-        <br/>
-        <button class="btn btn-danger" onclick=setImage("LJ_vs_IP.png")>LJ vs IP</button>
-        <button class="btn btn-danger" onclick=setImage("LJ_vs_SB.png")>LJ vs SB</button>
-        <button class="btn btn-danger" onclick=setImage("LJ_vs_BB.png")>LJ vs BB</button>
-        <br/>
-        <br/>
-        <button class="btn btn-info" onclick=setImage("HJ_vs_IP.png")>HJ vs IP</button>
-        <button class="btn btn-info" onclick=setImage("HJ_vs_SB.png")>HJ vs SB</button>
-        <button class="btn btn-info" onclick=setImage("HJ_vs_BB.png")>HJ vs BB</button>
-        <br/>
-        <br/>
-        <button class="btn btn-primary" onclick=setImage("CO_vs_IP.png")>CO vs IP</button>
-        <button class="btn btn-primary" onclick=setImage("CO_vs_SB.png")>CO vs SB</button>
-        <button class="btn btn-primary" onclick=setImage("CO_vs_BB.png")>CO vs BB</button>
-        <br/>
-        <br/>
-        <button class="btn btn-success" onclick=setImage("BTN_vs_SB.png")>BTN vs SB</button>
-        <button class="btn btn-success" onclick=setImage("BTN_vs_BB.png")>BTN vs BB</button>
-        <button class="btn btn-warning" onclick=setImage("SB_vs_BB.png")>SB vs BB</button>
-	<br/><br/>
-        3b Squeeze
-	<br/>
-	<button class="btn btn-danger" onclick=setImage("sq/SB.png")>SB</button>
-	<button class="btn btn-danger" onclick=setImage("sq/BB_vs_LJ.png")>BB vs LJ</button>
-	<button class="btn btn-danger" onclick=setImage("sq/BB_vs_HJ.png")>BB vs HJ</button>
-	<button class="btn btn-danger" onclick=setImage("sq/BB_vs_CO.png")>BB vs CO</button>    
-	<br/><br/>
-        Cold 4b
-	<br/>
-	<button class="btn btn-primary" onclick=setImage("c4b/BTN.png")>BTN</button>
-        <button class="btn btn-primary" onclick=setImage("c4b/SB_vs_HJ.png")>SB vs HJ</button>
-        <button class="btn btn-primary" onclick=setImage("c4b/SB_vs_CO.png")>SB vs CO</button>
-	<button class="btn btn-primary" onclick=setImage("c4b/SB_vs_BTN.png")>SB vs BTN</button>
-	<br/>
-	<br/>
-	<button class="btn btn-success" onclick=setImage("c4b/BB_vs_HJ.png")>BB vs HJ</button>
-        <button class="btn btn-success" onclick=setImage("c4b/BB_vs_CO.png")>BB vs CO</button>
-        <button class="btn btn-success" onclick=setImage("c4b/BB_vs_BTN.png")>BB vs BTN</button>
-	<button class="btn btn-success" onclick=setImage("c4b/BB_vs_SB.png")>BB vs SB</button>
-    </center>
+    
+    
     <br/>
-    <span class="parent">
-        <center>
-<!--             <button onclick=generateRandomNumber() class="button" id="result">0</button>
- -->            <div id="bar"> </div>
-        </center>
-    </span>
+    <center>
+    <table>
+        <tr>
+            <td><button class="button red" onclick=setImage("HJ_vs_16.png")>HJ vs 16%</button></td>
+            <td></td>
+            <td></td>
+            <td><button class="button purple" onclick=setImage("RFI.png")>RFI</button></td>
+        </tr>
+        <tr>
+            <td><button class="button blue" onclick=setImage("CO_vs_16.png")>CO vs 16%</button></td>
+            <td><button class="button blue" onclick=setImage("CO_vs_19.png")>CO vs 19%</button></td>
+        </tr>
+        <tr>
+            <td><button class="button green" onclick=setImage("BTN_vs_16.png")>BTN vs 16%</button></td>
+            <td><button class="button green" onclick=setImage("BTN_vs_19.png")>BTN vs 19%</button></td>
+            <td><button class="button green" onclick=setImage("BTN_vs_25.png")>BTN vs 25%</button></td>
+        </tr>
+        <tr>
+            <td><button class="button yellow" onclick=setImage("SB_vs_16.png")>SB vs 16%</button></td>
+            <td><button class="button yellow" onclick=setImage("SB_vs_19.png")>SB vs 19%</button></td>
+            <td><button class="button yellow" onclick=setImage("SB_vs_25.png")>SB vs 25%</button></td>
+            <td><button class="button yellow" onclick=setImage("SB_vs_40.png")>SB vs 40%</button></td>
+        </tr>
+    </table>
+    <div class="title">BB vs 2.5BB/3BB</div>
+    <table>
+        <tr>
+            <td><button class="button orange" onclick=setImage("BB_vs_2.5x14.png")>vs 14%</button></td>
+            <td><button class="button orange" onclick=setImage("BB_vs_2.5x19.png")>vs 19%</button></td>
+            <td><button class="button orange" onclick=setImage("BB_vs_2.5x25.png")>vs 25%</button></td>
+            <td><button class="button orange" onclick=setImage("BB_vs_2.5x35.png")>vs 35%</button></td>
+            <td><button class="button orange" onclick=setImage("BB_vs_2.5x41.png")>vs 41%</button></td>
+            <td><button class="button orange" onclick=setImage("BB_vs_2.5x50.png")>vs 50%</button></td>
+        </tr>
+        <tr>
+            <td><button class="button pink" onclick=setImage("BB_vs_3x14.png")>vs 14%</button></td>
+            <td><button class="button pink" onclick=setImage("BB_vs_3x16.png")>vs 16%</button></td>
+            <td><button class="button pink" onclick=setImage("BB_vs_3x19.png")>vs 19%</button></td>
+            <td><button class="button pink" onclick=setImage("BB_vs_3x25.png")>vs 25%</button></td>
+            <td><button class="button pink" onclick=setImage("BB_vs_3x35.png")>vs 35%</button></td>
+            <td><button class="button pink" onclick=setImage("BB_vs_3x50.png")>vs 50%</button></td>
+        </tr>
+    </table>
+    <div class="title">vs 3Bet</div>
+    <table>
+        <tr>
+            <td><button class="button red" onclick=setImage("LJ_vs_IP.png")>LJ vs IP</button><td/>
+            <td><button class="button red" onclick=setImage("LJ_vs_SB.png")>LJ vs SB</button><td/>
+            <td><button class="button red" onclick=setImage("LJ_vs_BB.png")>LJ vs BB</button><td/>
+            <td><button class="button blue" onclick=setImage("HJ_vs_IP.png")>HJ vs IP</button><td/>
+            <td><button class="button blue" onclick=setImage("HJ_vs_SB.png")>HJ vs SB</button><td/>
+            <td><button class="button blue" onclick=setImage("HJ_vs_BB.png")>HJ vs BB</button><td/>
+        </tr>
+        <tr>
+            <td><button class="button green" onclick=setImage("CO_vs_IP.png")>CO vs IP</button><td/>
+            <td><button class="button green" onclick=setImage("CO_vs_SB.png")>CO vs SB</button><td/>
+            <td><button class="button green" onclick=setImage("CO_vs_BB.png")>CO vs BB</button><td/>
+            <td><button class="button yellow" onclick=setImage("BTN_vs_SB.png")>BTN vs SB</button><td/>
+            <td><button class="button yellow" onclick=setImage("BTN_vs_BB.png")>BTN vs BB</button><td/>
+            <td><button class="button purple" onclick=setImage("SB_vs_BB.png")>SB vs BB</button><td/>
+        </tr>
+
+    </table>
+    <div class="title">3B Squeeze</div>
+    <table>
+        <tr>
+            <td><button class="button orange" onclick=setImage("sq/SB.png")>SB</button><td/>
+            <td><button class="button purple" onclick=setImage("sq/BB_vs_LJ.png")>BB vs LJ</button><td/>
+            <td><button class="button purple" onclick=setImage("sq/BB_vs_HJ.png")>BB vs HJ</button><td/>
+            <td><button class="button purple" onclick=setImage("sq/BB_vs_CO.png")>BB vs CO</button><td/>    
+        </tr>
+
+    </table>
+    <div class="title">Cold 4Bet</div>
+    <table>
+        <tr>
+            <td><button class="button red" onclick=setImage("c4b/BTN.png")>BTN</button><td/>
+            <td><button class="button blue" onclick=setImage("c4b/SB_vs_HJ.png")>SB vs HJ</button><td/>
+            <td><button class="button blue" onclick=setImage("c4b/SB_vs_CO.png")>SB vs CO</button><td/>
+            <td><button class="button blue" onclick=setImage("c4b/SB_vs_BTN.png")>SB vs BTN</button><td/>
+        </tr>
+        <tr>
+            <td><button class="button green" onclick=setImage("c4b/BB_vs_HJ.png")>BB vs HJ</button><td/>
+            <td><button class="button green" onclick=setImage("c4b/BB_vs_CO.png")>BB vs CO</button><td/>
+            <td><button class="button green" onclick=setImage("c4b/BB_vs_BTN.png")>BB vs BTN</button><td/>
+            <td><button class="button green" onclick=setImage("c4b/BB_vs_SB.png")>BB vs SB</button><td/>
+        </tr>
+
+    </table>
+	</center>
 
     <script>
         function setImage(imageName ){
             var path = "./images/".concat(imageName)
             var elem = document.getElementById("image")
             elem.src = path
-
-            var title = imageName.replace("_", " ")
-            title = title.replace("_", " ")
-            title = title.replace(".png", "")
-            if (title != "RFI") {
-            	title += "%"
-            }
-        }
-
-
-        function generateRandomNumber() {
-            var elem = document.getElementById("result")
-            var chosenNumber = Math.round(Math.random() * 99)
-            elem.innerHTML = chosenNumber
-
-            if (chosenNumber <= 10) {
-                elem.style.backgroundColor = "#37e3ff"
-            } else if (chosenNumber <= 20) {
-                elem.style.backgroundColor = "#58c4db"
-            } else if (chosenNumber <= 30) {
-                elem.style.backgroundColor = "#62bbd1"
-            } else if (chosenNumber <= 40) {
-                elem.style.backgroundColor = "#73abbe"
-            } else if (chosenNumber <= 50) {
-                elem.style.backgroundColor = "#839cad"
-            } else if (chosenNumber <= 60) {
-                elem.style.backgroundColor = "#958c9a"
-            } else if (chosenNumber <= 70) {
-                elem.style.backgroundColor = "#ad7681"
-            } else if (chosenNumber <= 80) {
-                elem.style.backgroundColor = "#bb6972"
-            } else if (chosenNumber <= 90) {
-                elem.style.backgroundColor = "#d1555b"
-            } else {
-                elem.style.backgroundColor = "#e54346"
-            }
         }
 
     </script>
@@ -147,27 +123,52 @@
             width:100%;
         }
         .button {
-          display: block;
           width: 100%;
-          height: 80px;
-          border: none;
-          background-color: #37e3ff;
-          padding: 14px 28px;
-          font-size: 45px;
-          cursor: pointer;
+          height: 28px;
           text-align: center;
+          font-size:  13px;
+          font-weight: bold;
         }
         .parent{
             width: 100%;
             height:  100%;
         }
-        .bar-elem {
-            padding: 10px;
-            width:10px;
-            height:10px;
-            border: 10px;
+        .left {
+            align: left;
         }
 
+        .row-label {
+            align:  center;
+            font-size:  10px;
+            padding-right: 4px;
+            font-weight:  bold;
+        }
+        .red {
+            background-color:  #f29c9b;
+        }
+        .blue {
+            background-color:  #9bd2f2;
+        }
+        .green {
+            background-color:  #89f0a8;
+        }
+        .yellow {
+            background-color:  #fcf586;
+        }
+        .purple {
+            background-color:  #d9a0fa;
+        }
+        .orange {
+            background-color:  #fac1a0;
+        }
+        .pink {
+            background-color:  #faa0d3;
+        }
+        .title {
+            font-size: 12px;
+            font-weight:  bold;
+            padding-top:  6px;
+        }
 
     </style>
 </body>
