@@ -1,0 +1,105 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>HU Dashboard</title>
+  <meta name="description" content="Ranges">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <img src="./images/HU_IP.png" id="image"></img>
+</head>
+
+<body>
+    <center>
+     <button class="btn btn-danger" onclick=setImage("HU_IP_200bb.png")>IP 200BB</button>
+		<button class="btn btn-info" onclick=setImage("HU_OOP_200bb.png")>OOP 200BB</button>
+		<button class="btn btn-success" onclick=setImage("HU_OOP_vs_4b_200bb.png")>OOP vs 4b 200BB</button>    
+    </center>
+    <br/>
+	<br/>
+<center>
+     <button class="btn btn-danger" onclick=setImage("HU_IP.png")>IP 100BB</button>
+		<button class="btn btn-info" onclick=setImage("HU_OOP.png")>OOP 100BB</button>
+		<button class="btn btn-success" onclick=setImage("HU_OOP_vs_4b.png")>OOP vs 4b 100BB</button>    
+    </center>
+    <br/>
+    <span class="parent">
+        <center>
+<!--             <button onclick=generateRandomNumber() class="button" id="result">0</button>
+ -->            <div id="bar"> </div>
+        </center>
+    </span>
+
+    <script>
+        function setImage(imageName ){
+            var path = "./images/".concat(imageName)
+            var elem = document.getElementById("image")
+            elem.src = path
+        }
+
+
+        function generateRandomNumber() {
+            var elem = document.getElementById("result")
+            var chosenNumber = Math.round(Math.random() * 99)
+            elem.innerHTML = chosenNumber
+
+            if (chosenNumber <= 10) {
+                elem.style.backgroundColor = "#37e3ff"
+            } else if (chosenNumber <= 20) {
+                elem.style.backgroundColor = "#58c4db"
+            } else if (chosenNumber <= 30) {
+                elem.style.backgroundColor = "#62bbd1"
+            } else if (chosenNumber <= 40) {
+                elem.style.backgroundColor = "#73abbe"
+            } else if (chosenNumber <= 50) {
+                elem.style.backgroundColor = "#839cad"
+            } else if (chosenNumber <= 60) {
+                elem.style.backgroundColor = "#958c9a"
+            } else if (chosenNumber <= 70) {
+                elem.style.backgroundColor = "#ad7681"
+            } else if (chosenNumber <= 80) {
+                elem.style.backgroundColor = "#bb6972"
+            } else if (chosenNumber <= 90) {
+                elem.style.backgroundColor = "#d1555b"
+            } else {
+                elem.style.backgroundColor = "#e54346"
+            }
+        }
+
+    </script>
+    <style>
+        .btn {
+            padding-top: 2px;
+            padding-bottom:  2px;
+        }
+        #image {
+            width:100%;
+        }
+        .button {
+          display: block;
+          width: 100%;
+          height: 80px;
+          border: none;
+          background-color: #37e3ff;
+          padding: 14px 28px;
+          font-size: 45px;
+          cursor: pointer;
+          text-align: center;
+        }
+        .parent{
+            width: 100%;
+            height:  100%;
+        }
+        .bar-elem {
+            padding: 10px;
+            width:10px;
+            height:10px;
+            border: 10px;
+        }
+
+
+    </style>
+</body>
+</html>

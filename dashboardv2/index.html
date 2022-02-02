@@ -1,0 +1,147 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>6max Ranges</title>
+  <meta name="description" content="Ranges">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <table>
+    <tr>
+      <td>
+        <img src="./images/LJ_0.png" id="left-image" class="range-image"></img>
+      </td>
+      <td>
+        <img src="./images/BBvsLJ_SRP_0.png" id="right-image" class="range-image"></img>
+      <td/>
+    </tr>
+  <table>
+</head>
+
+<body>
+    <br/>
+    <center>
+        <div class="title">SRP</div>
+    <table class="button-table">
+        <tr>
+            <td><button class="button red" onclick=setImages("LJ_0.png","BBvsLJ_SRP_0.png")>LJ vs BB</button></td>
+            <td><button class="button red" onclick=setImages("HJ_0.png","BBvsHJ_SRP_0.png")>HJ vs BB</button></td>
+            <td><button class="button red" onclick=setImages("CO_0.png","BBvsCO_SRP_0.png")>CO vs BB</button></td>
+        </tr>
+    </table>
+    <table class="button-table">
+        <tr>
+            <td><button class="button red" onclick=setImages("BTN_0.png","BBvsBTN_SRP_0.png")>BTN vs BB</button></td>
+            <td><button class="button red" onclick=setImages("SB_0.png","BBvsSB_SRP_0.png")>BvB</button></td>
+        </tr>
+    </table>
+    <center><div class="title">3BP IP</div></center>
+    <table class="button-table">
+
+        <tr>
+            <td><button class="button blue" onclick=setImages("HJvsLJ_3BP_0.png","LJvsHJ_3BP_0.png")>HJ vs LJ</button></td>
+            <td><button class="button blue" onclick=setImages("COvsLJ_3BP_0.png","LJvsCO_3BP_0.png")>CO vs LJ</button></td>
+            <td><button class="button blue" onclick=setImages("BTNvsLJ_3BP_0.png","LJvsBTN_3BP_0.png")>BTN vs LJ</button></td>
+        </tr>
+        <tr>
+            <td><button class="button green" onclick=setImages("COvsHJ_3BP_0.png","HJvsCO_3BP_0.png")>CO vs HJ</button></td>
+            <td><button class="button green" onclick=setImages("BTNvsHJ_3BP_0.png","HJvsBTN_3BP_0.png")>BTN vs HJ</button></td>
+            <td><button class="button green" onclick=setImages("BTNvsCO_3BP_0.png","COvsBTN_3BP_0.png")>BTN vs CO</button></td>
+        </tr>
+    </table>
+    <center><div class="title">3BP OOP</div></center>
+    <table class="button-table">
+        <tr>
+            <td><button class="button yellow" onclick=setImages("SBvsLJ_3BP_0.png","LJvsSB_3BP_0.png")>SB vs LJ</button></td>
+            <td><button class="button yellow" onclick=setImages("SBvsHJ_3BP_0.png","HJvsSB_3BP_0.png")>SB vs HJ</button></td>
+            <td><button class="button yellow" onclick=setImages("SBvsCO_3BP_0.png","COvsSB_3BP_0.png")>SB vs CO</button></td>
+            <td><button class="button yellow" onclick=setImages("SBvsBTN_3BP_0.png","BTNvsSB_3BP_0.png")>SB vs BTN</button></td>
+        </tr>
+    </table>
+    <table class="button-table">
+        <tr>
+            <td><button class="button orange" onclick=setImages("BBvsLJ_3BP_0.png","LJvsBB_3BP_0.png")>BB vs LJ</button></td>
+            <td><button class="button orange" onclick=setImages("BBvsHJ_3BP_0.png","HJvsBB_3BP_0.png")>BB vs HJ</button></td>
+            <td><button class="button orange" onclick=setImages("BBvsCO_3BP_0.png","COvsBB_3BP_0.png")>BB vs CO</button></td>
+            <td><button class="button orange" onclick=setImages("BBvsBTN_3BP_0.png","BTNvsBB_3BP_0.png")>BB vs BTN</button></td>
+            <td><button class="button orange" onclick=setImages("BBvsSB_3BP_0.png","SBvsBB_3BP_0.png")>BB vs SB</button></td>
+        </tr>
+    </table>
+    </center>
+
+    <script>
+        function setImages(leftImage, rightImage ){
+            var path = "./images/".concat(leftImage)
+            var elem = document.getElementById("left-image")
+            elem.src = path
+
+            var path2 = "./images/".concat(rightImage)
+            var elem2 = document.getElementById("right-image")
+            elem2.src = path2
+        }
+
+    </script>
+    <style>
+        .btn {
+            padding-top: 2px;
+            padding-bottom:  2px;
+        }
+        .button {
+          width: 100%;
+          height: 28px;
+          text-align: center;
+          font-size:  13px;
+          font-weight: bold;
+        }
+        .parent{
+            width: 100%;
+            height:  100%;
+        }
+
+        .row-label {
+            align:  center;
+            font-size:  10px;
+            padding-right: 4px;
+            font-weight:  bold;
+        }
+        .red {
+            background-color:  #f29c9b;
+        }
+        .blue {
+            background-color:  #9bd2f2;
+        }
+        .green {
+            background-color:  #89f0a8;
+        }
+        .yellow {
+            background-color:  #fcf586;
+        }
+        .purple {
+            background-color:  #d9a0fa;
+        }
+        .orange {
+            background-color:  #fac1a0;
+        }
+        .pink {
+            background-color:  #faa0d3;
+        }
+        .title {
+            font-size: 12px;
+            font-weight:  bold;
+            padding-top:  6px;
+        }
+
+        .range-image {
+          width: 100%;
+        }
+        .button-table {
+          align: center;
+            margin: auto;
+
+        }
+
+    </style>
+</body>
+</html>
