@@ -105,12 +105,44 @@
 
     </table>
 	</center>
-
+    <span class="parent">
+        <center>
+            <button onclick=generateRandomNumber() class="button" id="result">0</button>
+            <div id="bar"> </div>
+        </center>
+    </span>
     <script>
         function setImage(imageName ){
             var path = "./images/".concat(imageName)
             var elem = document.getElementById("image")
             elem.src = path
+        }
+	function generateRandomNumber() {
+            var elem = document.getElementById("result")
+            var chosenNumber = Math.round(Math.random() * 99)
+            elem.innerHTML = chosenNumber
+
+            if (chosenNumber <= 10) {
+                elem.style.backgroundColor = "#37e3ff"
+            } else if (chosenNumber <= 20) {
+                elem.style.backgroundColor = "#58c4db"
+            } else if (chosenNumber <= 30) {
+                elem.style.backgroundColor = "#62bbd1"
+            } else if (chosenNumber <= 40) {
+                elem.style.backgroundColor = "#73abbe"
+            } else if (chosenNumber <= 50) {
+                elem.style.backgroundColor = "#839cad"
+            } else if (chosenNumber <= 60) {
+                elem.style.backgroundColor = "#958c9a"
+            } else if (chosenNumber <= 70) {
+                elem.style.backgroundColor = "#ad7681"
+            } else if (chosenNumber <= 80) {
+                elem.style.backgroundColor = "#bb6972"
+            } else if (chosenNumber <= 90) {
+                elem.style.backgroundColor = "#d1555b"
+            } else {
+                elem.style.backgroundColor = "#e54346"
+            }
         }
 
     </script>
