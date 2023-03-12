@@ -15,6 +15,11 @@
 <body>
     <center>
     </br>
+      <button class="btn btn-success dirs" onclick=setDirectory("200NL")>200NL</button>
+      <button class="btn btn-success dirs" onclick=>500NL</button>
+      <button class="btn btn-success dirs" onclick=setDirectory("1kNL")>1kNL</button>
+    </br>
+    </br>
       <button class="btn btn-danger p1b" onclick=selectP1Button("LJ")>LJ</button>
       <button class="btn btn-danger p1b" onclick=selectP1Button("HJ")>HJ</button>
       <button class="btn btn-danger p1b" onclick=selectP1Button("CO")>CO</button>
@@ -39,7 +44,25 @@
     </span>
 
     <script>
+        let DIRECTORY = "200z"
 
+        function setDirectory(dir) {
+          DIRECTORY = dir;
+          setImages()
+          var elements = document.getElementsByClassName("dirs");
+          for (let i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            if (element.innerHTML == dir) {
+              element.classList.remove("btn-success");
+              element.classList.add("btn-warning");
+              element.classList.add("selected");
+            } else {
+              element.classList.remove("btn-warning");
+              element.classList.remove("selected");
+              element.classList.add("btn-success");
+            }
+          }
+        }
         function selectP1Button(p1Position) {
           var elements = document.getElementsByClassName("p1b");
           for (let i = 0; i < elements.length; i++) {
@@ -123,8 +146,8 @@
 
           var p1 = getSelectedPlayer("p1b")
           var p2 = getSelectedPlayer("p2b")
-          var path1 = `./images/200z/${p1}_vs_${p2}_p1.png`
-          var path2 = `./images/200z/${p1}_vs_${p2}_p2.png`
+          var path1 = `./images/${DIRECTORY}/${p1}_vs_${p2}_p1.png`
+          var path2 = `./images/${DIRECTORY}/${p1}_vs_${p2}_p2.png`
 
           var elem1 = document.getElementById("image_1")
           var elem2 = document.getElementById("image_2")
