@@ -1,0 +1,204 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>HU Dashboard</title>
+  <meta name="description" content="Ranges">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <center><img src="./images/HU_ANTE/v2/IP_25_110_250_1000.png" id="image_1"></img><br/><img src="./images/HU_ANTE/v2/OOP_25_110_250_1000.png" id="image_2"></img></center>
+  </div>
+</head>
+
+<body>
+    <center>
+    </br>
+      <button class="btn btn-danger p1b" onclick=selectP1Button("LJ")>LJ</button>
+      <button class="btn btn-danger p1b" onclick=selectP1Button("HJ")>HJ</button>
+      <button class="btn btn-danger p1b" onclick=selectP1Button("CO")>CO</button>
+      <button class="btn btn-danger p1b" onclick=selectP1Button("BTN")>BTN</button>
+      <button class="btn btn-danger p1b" onclick=selectP1Button("SB")>SB</button>
+      <button class="btn btn-secondary">__</button>
+      </br> </br>
+      <button class="btn btn-secondary">__</button>
+      <button class="btn btn-info p2b" onclick=selectP2Button("HJ")>HJ</button>
+      <button class="btn btn-info p2b" onclick=selectP2Button("CO")>CO</button>
+      <button class="btn btn-info p2b" onclick=selectP2Button("BTN")>BTN</button>
+      <button class="btn btn-info p2b" onclick=selectP2Button("SB")>SB</button>
+      <button class="btn btn-info p2b" onclick=selectP2Button("BB")>BB</button>
+    </center>
+
+    <br/>
+    <span class="parent">
+        <center>
+            <button onclick=generateRandomNumber() class="button" id="result">0</button>
+            <div id="bar"> </div>
+        </center>
+    </span>
+
+    <script>
+
+        function selectP1Button(p1Position) {
+          var elements = document.getElementsByClassName("p1b");
+          for (let i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            if (element.innerHTML == p1Position) {
+              element.classList.remove("btn-danger");
+              element.classList.add("btn-warning");
+              element.classList.add("selected");
+            } else {
+              element.classList.remove("btn-warning");
+              element.classList.remove("selected");
+              element.classList.add("btn-danger");
+            }
+          }
+
+          var p2 = getSelectedPlayer("p2b")
+          if (isValidPlayerCombo(p1Position, p2)) {
+            // fine
+          } else {
+            selectP2Button("BB")
+          }
+          setImages()
+        }
+
+        function getSelectedPlayer(pClass) {
+          var elements = document.getElementsByClassName(pClass);
+          for (let i = 0; i < elements.length; i++) {
+            if (elements[i].classList.contains("selected")) {
+              return elements[i].innerHTML;
+            }
+          }
+          return '';
+        }
+
+        function selectP2Button(p2Position) {
+
+          var p1 = getSelectedPlayer("p1b")
+          if (!isValidPlayerCombo(p1, p2Position)) {
+            return;
+          }
+
+          var elements = document.getElementsByClassName("p2b");
+          for (let i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            if (element.innerHTML == p2Position) {
+              element.classList.remove("btn-info");
+              element.classList.add("btn-warning");
+              element.classList.add("selected");
+            } else {
+              element.classList.remove("btn-warning");
+              element.classList.remove("selected");
+              element.classList.add("btn-info");
+            }
+          }
+          setImages()
+        }
+
+        function isValidPlayerCombo(player1, player2) {
+          if (player1 == player2) {
+            return false;
+          }
+          if (player1 == "LJ") {
+            return true;
+          }
+          if (player1 == "HJ") {
+            return player2 !== "LJ"
+          }
+          if (player1 == "CO") {
+            return player2 !== "LJ" && player2 !== "HJ";
+          }
+          if (player1 == "BTN") {
+            return player2 == "SB" || player2 == "BB"
+          }
+          if (player1 == "SB") {
+            return player2 == "BB";
+          }
+          return false;
+        }
+
+        function setImages(){
+
+          var p1 = getSelectedPlayer("p1b")
+          var p2 = getSelectedPlayer("p2b")
+          var path1 = `./images/200z/${p1}_vs_${p2}_p1.png`
+          var path2 = `./images/200z/${p1}_vs_${p2}_p2.png`
+
+          var elem1 = document.getElementById("image_1")
+          var elem2 = document.getElementById("image_2")
+          elem1.src = path1
+          elem2.src = path2
+        }
+
+
+        function generateRandomNumber() {
+            var elem = document.getElementById("result")
+            var chosenNumber = Math.round(Math.random() * 99)
+            elem.innerHTML = chosenNumber
+
+            if (chosenNumber <= 10) {
+                elem.style.backgroundColor = "#37e3ff"
+            } else if (chosenNumber <= 20) {
+                elem.style.backgroundColor = "#58c4db"
+            } else if (chosenNumber <= 30) {
+                elem.style.backgroundColor = "#62bbd1"
+            } else if (chosenNumber <= 40) {
+                elem.style.backgroundColor = "#73abbe"
+            } else if (chosenNumber <= 50) {
+                elem.style.backgroundColor = "#839cad"
+            } else if (chosenNumber <= 60) {
+                elem.style.backgroundColor = "#958c9a"
+            } else if (chosenNumber <= 70) {
+                elem.style.backgroundColor = "#ad7681"
+            } else if (chosenNumber <= 80) {
+                elem.style.backgroundColor = "#bb6972"
+            } else if (chosenNumber <= 90) {
+                elem.style.backgroundColor = "#d1555b"
+            } else {
+                elem.style.backgroundColor = "#e54346"
+            }
+        }
+
+        selectP1Button("BTN")
+        selectP2Button("BB")
+    </script>
+    <style>
+        .btn {
+            padding-top: 2px;
+            padding-bottom:  2px;
+        }
+        #image_1 {
+            width:80%;
+        }
+        #image_2 {
+            width:80%;
+        }
+
+        .button {
+          display: block;
+          width: 100%;
+          height: 80px;
+          border: none;
+          background-color: #37e3ff;
+          padding: 14px 28px;
+          font-size: 45px;
+          cursor: pointer;
+          text-align: center;
+        }
+        .parent{
+            width: 100%;
+            height:  100%;
+        }
+        .bar-elem {
+            padding: 10px;
+            width:10px;
+            height:10px;
+            border: 10px;
+        }
+
+
+    </style>
+</body>
+</html>
