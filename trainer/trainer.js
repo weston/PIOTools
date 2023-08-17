@@ -198,7 +198,7 @@ function formatObject(ob) {
     action = action.replace("CHECK", 'x')
     action = action.replace("CALL", 'c')
     action = action.replace("RAISE ", 'r')
-    action = action.replace("FOLD ", 'f')
+    action = action.replace("FOLD", 'f')
     let prefix = ''
     let suffix = '';
     if (result.toString().includes("+")) {
