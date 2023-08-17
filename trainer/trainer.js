@@ -92,6 +92,7 @@ function newDrill() {
     slider.type = "range";
     slider.min = 0;
     slider.max = 100;
+    slider.classList.add('slider')
     if (isLast) {
       slider.value = 100 - totalFreqCounter;
     } else {
@@ -118,7 +119,7 @@ function newDrill() {
     e.oninput = handleSliderMove;
   }
   const nextButton = document.createElement('input')
-  nextButton.value = "Submit";
+  nextButton.value = "Next";
   nextButton.type = "button";
   nextButton.onclick = function() {
     appendResults(board, chosenRow);
@@ -169,12 +170,15 @@ function appendResults(board, rowData) {
 }
 
 function formatObject(ob) {
-  let obString = JSON.stringify(
-    ob).replace(/"/g, "").replace(":", ": ");
-  obString = obString.replace(/{/g, '').replace(/}/g, '')
-  obString = obString.replace(/BET /g, 'b').replace(/RAISE /g, 'r')
-  obString = obString.replace(/CHECK/g, 'x').replace(/FOLD/g, 'f')
-  obString = obString.replace(/,/g, ', ')
-
-  return obString;
+  const lines = [];
+  for (let action of state.actions) {
+    const oldActio = action;
+    action = action.replace("BET ", 'b')
+    action = action.replace("CHECK", 'x')
+    action = action.replace("CALL", 'c')
+    action = action.replace("RAISE ", 'r')
+    action = action.replace("FOLD ", 'f')
+    lines.push(`${action}: ${ob[oldActio]}%`)
+  }
+  return lines.join("<br/>")
 }
