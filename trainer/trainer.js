@@ -5,6 +5,7 @@ const state = {
   actions: [],
   filename: String,
   columns: [],
+  results: [],
 };
 
 
@@ -29,6 +30,7 @@ function init() {
 // fileContents is a PIOSolver CSV string
 function initDrills(filename, fileContents) {
   // Add filename to cookies
+  fileContents = fileContents.replace(/\r/g, "");
   const fileLines = fileContents.split("\n");
   const title = fileLines[1].split(", ")[1];
   const columns = fileLines[3].split(",");
@@ -57,47 +59,29 @@ function newDrill() {
   const index = Math.floor(Math.random() * state.dataRows.length);
   const chosenRow = state.dataRows[index].split(",");
   const flop = chosenRow[state.columns.indexOf('Flop')]
-  const turn = state.columns.indexOf('Turn') >= 0 ? chosenRow[state.columns.indexOf('Turn')] : '';
-  const river= state.columns.indexOf('River') >= 0 ? chosenRow[state.columns.indexOf('River')] : '';
-  document.getElementById('trainer-board').innerHTML = flop + turn + river;
+  const turn = state.columns.indexOf('Turn') >= 0 ? ' ' + chosenRow[state.columns.indexOf('Turn')] : '';
+  const river= state.columns.indexOf('River') >= 0 ? ' ' + chosenRow[state.columns.indexOf('River')] : '';
+  const board = flop + turn + river;
+  document.getElementById('trainer-board').innerHTML = board;
   const controlsContainer = document.getElementById('trainer-controls');
-
+  controlsContainer.innerHTML = "";
   let totalFreqCounter = 0;
   function handleSliderMove(e) {
-    const sourceID = e.srcElement.id;
-    const displayID = sourceID + '-display';
-    document.getElementById(displayID).innerHTML = e.srcElement.value;
-
+    // Update display percentages
     // Make sure that everything sums up to 100
-    let totalFreq = 0;
+    let total = 0;
     for (let i = 0; i < state.actions.length; i++) {
       const sliderID = `slider-id-${i}`;
       const slider = document.getElementById(sliderID);
-      totalFreq += parseInt(slider.value);
+      total += parseInt(slider.value);
     }
     // Iterate backwards through the sliders, and increase/decrease them until
     // the excess is handled.
-    for (let i = state.actions.length - 1; i >= 0; i--) {
+    for (let i = 0; i < state.actions.length; i++) {
       const sliderID = `slider-id-${i}`;
-      if (sliderID === sourceID) {
-        // Don't adjust the thing we just updated.
-        continue;
-      }
       const slider = document.getElementById(sliderID);
-      if (totalFreq > 100) {
-        const excess = totalFreq - 100;
-        const sliderValue = parseInt(slider.value);
-        slider.value = sliderValue - Math.min(sliderValue, excess);
-        totalFreq -= Math.min(sliderValue, excess);
-      } else if (totalFreq < 100) {
-        const deficit = 100 - totalFreq ;
-        const sliderValue = parseInt(slider.value);
-        slider.value = sliderValue + Math.min(100-sliderValue, deficit);
-        totalFreq += Math.min(sliderValue, deficit);
-      } else {
-        break;
-      }
-      document.getElementById(`${sliderID}-display`).innerHTML = slider.value;
+      const percentage = Math.round(100 * (1.0 * parseInt(slider.value) / total), 2)
+      document.getElementById(`${sliderID}-display`).innerHTML = `${percentage}%`;
     }
   }
 
@@ -112,7 +96,7 @@ function newDrill() {
       slider.value = 100 - totalFreqCounter;
     } else {
       slider.value = Math.round(100 / state.actions.length);
-      totalFreqCounter += slider.value;
+      totalFreqCounter += parseInt(slider.value);
     }
     slider.id = `slider-id-${state.actions.indexOf(actionLabel)}`;
     sliderContainer.innerHTML += actionLabel + ' ';
@@ -120,7 +104,7 @@ function newDrill() {
 
     const freqDisplay = document.createElement("span");
     freqDisplay.id = slider.id + '-display';
-    freqDisplay.innerHTML = slider.value;
+    freqDisplay.innerHTML = `${slider.value}%`;
     sliderContainer.innerHTML += "  "
     sliderContainer.appendChild(freqDisplay)
 
@@ -133,4 +117,64 @@ function newDrill() {
     const e = document.getElementById(`slider-id-${i}`)
     e.oninput = handleSliderMove;
   }
+  const nextButton = document.createElement('input')
+  nextButton.value = "Submit";
+  nextButton.type = "button";
+  nextButton.onclick = function() {
+    appendResults(board, chosenRow);
+    newDrill();
+  }
+  controlsContainer.appendChild(nextButton);
+}
+
+function appendResults(board, rowData) {
+  const chosenFrequencies = {};
+  for (const action of state.actions) {
+    const slider = document.getElementById(`slider-id-${state.actions.indexOf(action)}`)
+    chosenFrequencies[action] = parseInt(slider.value);
+  }
+  const solverFrequencies = {};
+  const diffs = {};
+  for (const action of state.actions) {
+    const frequencyColumnIndex = state.actionToColumnIndex[action];
+    const frequencyString = rowData[frequencyColumnIndex].replace('\r', '');
+    const frequency = Math.round(parseFloat(frequencyString));
+    solverFrequencies[action] = frequency;
+    const diff = chosenFrequencies[action] - frequency;
+    if (diff > 0) {
+      diffs[action] = `+${diff}`
+    } else if (diff < 0) {
+      diffs[action] = `${diff}`
+    } else {
+      diffs[action] = "0";
+    }
+  }
+  const resultsTable = document.getElementById('results-table-entries');
+  const tableRow = resultsTable.insertRow(1)
+  const boardElement = document.createElement('td')
+  boardElement.innerHTML = board;
+  tableRow.appendChild(boardElement);
+
+  const gtoElement = document.createElement('td')
+  gtoElement.innerHTML = formatObject(solverFrequencies);
+  tableRow.appendChild(gtoElement);
+ 
+  const heroElement = document.createElement('td');
+  heroElement.innerHTML = formatObject(chosenFrequencies);
+  tableRow.appendChild(heroElement);
+
+  const diffElement = document.createElement('td');
+  diffElement.innerHTML = formatObject(diffs);
+  tableRow.appendChild(diffElement);
+}
+
+function formatObject(ob) {
+  let obString = JSON.stringify(
+    ob).replace(/"/g, "").replace(":", ": ");
+  obString = obString.replace(/{/g, '').replace(/}/g, '')
+  obString = obString.replace(/BET /g, 'b').replace(/RAISE /g, 'r')
+  obString = obString.replace(/CHECK/g, 'x').replace(/FOLD/g, 'f')
+  obString = obString.replace(/,/g, ', ')
+
+  return obString;
 }
