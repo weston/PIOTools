@@ -32,7 +32,8 @@ function initDrills(filename, fileContents) {
   // Add filename to cookies
   fileContents = fileContents.replace(/\r/g, "");
   const fileLines = fileContents.split("\n");
-  const title = fileLines[1].split(", ")[1];
+  let title = fileLines[1].split(", ")[1];
+  title = title.split(`\\`).slice(0, title.split(`\\`).length - 1).join('\\');
   const columns = fileLines[3].split(",");
   const actions = [];
   document.getElementById("trainer-title").innerHTML = title;
