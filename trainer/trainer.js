@@ -238,7 +238,7 @@ function formatBoard(boardString) {
 function getAccuracyThreshold() {
   const result = parseInt(document.getElementById('accuracy-threshold').innerHTML)
   if (isNaN(result)) {
-    return 10;
+    return 15;
   }
   return result;
 }
