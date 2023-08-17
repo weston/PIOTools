@@ -146,8 +146,9 @@ function newDrill() {
 function appendResults(board, rowData) {
   const chosenFrequencies = {};
   for (const action of state.actions) {
-    const slider = document.getElementById(`slider-id-${state.actions.indexOf(action)}`)
-    chosenFrequencies[action] = parseInt(slider.value);
+    const sliderID = `slider-id-${state.actions.indexOf(action)}`;
+    const sliderDisplay = document.getElementById(`${sliderID}-display`);
+    chosenFrequencies[action] = parseInt(sliderDisplay.innerHTML.replace("%", ""));
   }
   const solverFrequencies = {};
   const diffs = {};
@@ -158,7 +159,6 @@ function appendResults(board, rowData) {
     const frequency = Math.round(parseFloat(frequencyString));
     solverFrequencies[action] = frequency;
     const diff = chosenFrequencies[action] - frequency;
-    console.log(diff, getAccuracyThreshold())
     if (Math.abs(diff) > getAccuracyThreshold()) {
       isCorrect = false;
     }
@@ -170,7 +170,6 @@ function appendResults(board, rowData) {
       diffs[action] = "0";
     }
   }
-  console.log(isCorrect)
   const resultsTable = document.getElementById('results-table-entries');
   const tableRow = resultsTable.insertRow(1)
   tableRow.classList.add(isCorrect? 'correct-row' : 'incorrect-row');
