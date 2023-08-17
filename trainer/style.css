@@ -90,3 +90,7 @@ td, th {
 .incorrect-row {
   background-color: #FFCCCB;
 }
+
+.results-board {
+  font-size: 20pt;
+}

@@ -175,6 +175,7 @@ function appendResults(board, rowData) {
   tableRow.classList.add(isCorrect? 'correct-row' : 'incorrect-row');
   const boardElement = document.createElement('td')
   boardElement.innerHTML = formatBoard(board);
+  boardElement.classList.add('results-board');
   tableRow.appendChild(boardElement);
 
   const gtoElement = document.createElement('td')
