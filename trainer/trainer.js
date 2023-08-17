@@ -151,12 +151,17 @@ function appendResults(board, rowData) {
   }
   const solverFrequencies = {};
   const diffs = {};
+  let isCorrect = true;
   for (const action of state.actions) {
     const frequencyColumnIndex = state.actionToColumnIndex[action];
     const frequencyString = rowData[frequencyColumnIndex].replace('\r', '');
     const frequency = Math.round(parseFloat(frequencyString));
     solverFrequencies[action] = frequency;
     const diff = chosenFrequencies[action] - frequency;
+    console.log(diff, getAccuracyThreshold())
+    if (Math.abs(diff) > getAccuracyThreshold()) {
+      isCorrect = false;
+    }
     if (diff > 0) {
       diffs[action] = `+${diff}`
     } else if (diff < 0) {
@@ -165,8 +170,10 @@ function appendResults(board, rowData) {
       diffs[action] = "0";
     }
   }
+  console.log(isCorrect)
   const resultsTable = document.getElementById('results-table-entries');
   const tableRow = resultsTable.insertRow(1)
+  tableRow.classList.add(isCorrect? 'correct-row' : 'incorrect-row');
   const boardElement = document.createElement('td')
   boardElement.innerHTML = formatBoard(board);
   tableRow.appendChild(boardElement);
@@ -226,4 +233,12 @@ function formatBoard(boardString) {
     }
   }
   return newComponents.join("")
+}
+
+function getAccuracyThreshold() {
+  const result = parseInt(document.getElementById('accuracy-threshold').innerHTML)
+  if (isNaN(result)) {
+    return 10;
+  }
+  return result;
 }

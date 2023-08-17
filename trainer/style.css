@@ -78,3 +78,15 @@ td, th {
 .too-low-result {
   color: red;
 }
+
+#accuracy-threshold {
+  width: 30px;
+}
+
+.correct-row {
+  background-color: #AFE1AF;
+}
+
+.incorrect-row {
+  background-color: #FFCCCB;
+}
