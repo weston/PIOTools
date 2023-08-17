@@ -62,11 +62,25 @@ function newDrill() {
   const turn = state.columns.indexOf('Turn') >= 0 ? ' ' + chosenRow[state.columns.indexOf('Turn')] : '';
   const river= state.columns.indexOf('River') >= 0 ? ' ' + chosenRow[state.columns.indexOf('River')] : '';
   const board = flop + turn + river;
-  document.getElementById('trainer-board').innerHTML = board;
+  document.getElementById('trainer-board').innerHTML = formatBoard(board);
   const controlsContainer = document.getElementById('trainer-controls');
   controlsContainer.innerHTML = "";
   let totalFreqCounter = 0;
   function handleSliderMove(e) {
+    // If there are only 2 actions, we can just update the other one 
+    // such that they both are 100%
+    if (state.actions.length === 2) {
+      const newValue = e.srcElement.value;
+      const updatedID = e.srcElement.id;
+      for (let i = 0; i < 2; i++) {
+        const sliderID = `slider-id-${i}`;
+        if (sliderID !== updatedID) {
+          const otherSlider = document.getElementById(sliderID);
+          otherSlider.value = 100 - newValue;
+        }
+      }
+    }
+
     // Update display percentages
     // Make sure that everything sums up to 100
     let total = 0;
@@ -153,7 +167,7 @@ function appendResults(board, rowData) {
   const resultsTable = document.getElementById('results-table-entries');
   const tableRow = resultsTable.insertRow(1)
   const boardElement = document.createElement('td')
-  boardElement.innerHTML = board;
+  boardElement.innerHTML = formatBoard(board);
   tableRow.appendChild(boardElement);
 
   const gtoElement = document.createElement('td')
@@ -172,13 +186,43 @@ function appendResults(board, rowData) {
 function formatObject(ob) {
   const lines = [];
   for (let action of state.actions) {
-    const oldActio = action;
+    const result = ob[action]
     action = action.replace("BET ", 'b')
     action = action.replace("CHECK", 'x')
     action = action.replace("CALL", 'c')
     action = action.replace("RAISE ", 'r')
     action = action.replace("FOLD ", 'f')
-    lines.push(`${action}: ${ob[oldActio]}%`)
+    let prefix = ''
+    let suffix = '';
+    if (result.toString().includes("+")) {
+      prefix = `<span class="too-high-result">`
+      suffix =  `</span>`;
+    }
+    if (result.toString().includes("-")) {
+      prefix = `<span class="too-low-result">`
+      suffix =  `</span>`;
+    }
+    lines.push(`${prefix}${action}: ${result}%${suffix}`)
   }
   return lines.join("<br/>")
+}
+
+function formatBoard(boardString) {
+  const components = boardString.split(" ");
+  const newComponents = [];
+  for (const card of components) {
+    if (card[1] === 'c') {
+      newComponents.push(`<span class="club">${card[0]} </>`)
+    }
+    if (card[1] === 's') {
+      newComponents.push(`<span class="spade">${card[0]} </>`)
+    }
+    if (card[1] === 'h') {
+      newComponents.push(`<span class="heart">${card[0]} </>`)
+    }
+    if (card[1] === 'd') {
+      newComponents.push(`<span class="diamond">${card[0]} </>`)
+    }
+  }
+  return newComponents.join("")
 }

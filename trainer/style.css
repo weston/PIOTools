@@ -49,3 +49,32 @@ td, th {
   -webkit-transition: .2s;
   transition: opacity .2s;
 }
+
+.club {
+  color: green;
+}
+
+.spade {
+
+}
+
+.heart {
+  color:red;
+
+}
+
+.diamond {
+  color:blue;
+}
+
+#trainer-board {
+  font-size: 30pt;
+}
+
+.too-high-result {
+  color: green;
+}
+
+.too-low-result {
+  color: red;
+}
