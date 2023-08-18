@@ -124,7 +124,8 @@ function newDrill() {
       totalFreqCounter += parseInt(slider.value);
     }
     slider.id = `slider-id-${state.actions.indexOf(actionLabel)}`;
-   
+
+    sliderContainer.appendChild(createSliderShortcutButton(0, slider.id)) 
     sliderContainer.appendChild(createSliderShortcutButton(15, slider.id))
     sliderContainer.appendChild(createSliderShortcutButton(35, slider.id))
     sliderContainer.appendChild(createSliderShortcutButton(50, slider.id))
