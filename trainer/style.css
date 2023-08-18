@@ -1,6 +1,3 @@
-#header {
-}
-
 #body-elem {
   text-align: center;
 }
@@ -14,8 +11,12 @@
   width: 50%;
 }
 
-#trainer {
+#trainer-controls {
+  margin: auto;
+  width: 25%;
+  font-size: 14pt;
 }
+
 
 td, th {
   padding-right: 10px;
@@ -30,16 +31,12 @@ td, th {
   width: 100%;
 }
 
-#trainer {
-}
-
 #results-table-entries {
   margin: auto;
 }
 
 
 .slider {
-  -webkit-appearance: none;
   height: 20px;
   width: 200px;
   border-radius: 10px;  
@@ -52,10 +49,6 @@ td, th {
 
 .club {
   color: green;
-}
-
-.spade {
-
 }
 
 .heart {
@@ -93,4 +86,8 @@ td, th {
 
 .results-board {
   font-size: 20pt;
+}
+
+.shortcut-slider-button {
+
 }

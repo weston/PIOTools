@@ -56,6 +56,40 @@ function initDrills(filename, fileContents) {
   state.actions = actions;
 }
 
+function handleSliderMove(e) {
+  // If there are only 2 actions, we can just update the other one 
+  // such that they both are 100%
+  if (state.actions.length === 2) {
+    const newValue = e.srcElement.value;
+    const updatedID = e.srcElement.id;
+    for (let i = 0; i < 2; i++) {
+      const sliderID = `slider-id-${i}`;
+      if (sliderID !== updatedID) {
+        const otherSlider = document.getElementById(sliderID);
+        otherSlider.value = 100 - newValue;
+      }
+    }
+  }
+
+  // Update display percentages
+  // Make sure that everything sums up to 100
+  let total = 0;
+  for (let i = 0; i < state.actions.length; i++) {
+    const sliderID = `slider-id-${i}`;
+    const slider = document.getElementById(sliderID);
+    total += parseInt(slider.value);
+  }
+  // Iterate backwards through the sliders, and increase/decrease them until
+  // the excess is handled.
+  for (let i = 0; i < state.actions.length; i++) {
+    const sliderID = `slider-id-${i}`;
+    const slider = document.getElementById(sliderID);
+    const percentage = Math.round(100 * (1.0 * parseInt(slider.value) / total), 2)
+    document.getElementById(`${sliderID}-display`).innerHTML = `${percentage}%`;
+  }
+}
+
+
 function newDrill() {
   const index = Math.floor(Math.random() * state.dataRows.length);
   const chosenRow = state.dataRows[index].split(",");
@@ -64,45 +98,20 @@ function newDrill() {
   const river= state.columns.indexOf('River') >= 0 ? ' ' + chosenRow[state.columns.indexOf('River')] : '';
   const board = flop + turn + river;
   document.getElementById('trainer-board').innerHTML = formatBoard(board);
-  const controlsContainer = document.getElementById('trainer-controls');
-  controlsContainer.innerHTML = "";
+  const controlsTable = document.getElementById('trainer-controls');
+  controlsTable.innerHTML = "";
   let totalFreqCounter = 0;
-  function handleSliderMove(e) {
-    // If there are only 2 actions, we can just update the other one 
-    // such that they both are 100%
-    if (state.actions.length === 2) {
-      const newValue = e.srcElement.value;
-      const updatedID = e.srcElement.id;
-      for (let i = 0; i < 2; i++) {
-        const sliderID = `slider-id-${i}`;
-        if (sliderID !== updatedID) {
-          const otherSlider = document.getElementById(sliderID);
-          otherSlider.value = 100 - newValue;
-        }
-      }
-    }
 
-    // Update display percentages
-    // Make sure that everything sums up to 100
-    let total = 0;
-    for (let i = 0; i < state.actions.length; i++) {
-      const sliderID = `slider-id-${i}`;
-      const slider = document.getElementById(sliderID);
-      total += parseInt(slider.value);
-    }
-    // Iterate backwards through the sliders, and increase/decrease them until
-    // the excess is handled.
-    for (let i = 0; i < state.actions.length; i++) {
-      const sliderID = `slider-id-${i}`;
-      const slider = document.getElementById(sliderID);
-      const percentage = Math.round(100 * (1.0 * parseInt(slider.value) / total), 2)
-      document.getElementById(`${sliderID}-display`).innerHTML = `${percentage}%`;
-    }
-  }
-
+  
   for (const actionLabel of state.actions) {
+    const controlsRow = document.createElement("tr");
+
+    const actionLabelElem = document.createElement("td")
+    actionLabelElem.innerHTML = actionLabel;
+    controlsRow.appendChild(actionLabelElem)
+
     const isLast = actionLabel === state.actions[state.actions.length - 1]
-    const sliderContainer = document.createElement("div");
+    const sliderContainer = document.createElement("td");
     const slider = document.createElement('input');
     slider.type = "range";
     slider.min = 0;
@@ -115,17 +124,20 @@ function newDrill() {
       totalFreqCounter += parseInt(slider.value);
     }
     slider.id = `slider-id-${state.actions.indexOf(actionLabel)}`;
-    sliderContainer.innerHTML += actionLabel + ' ';
+   
+    sliderContainer.appendChild(createSliderShortcutButton(0, slider.id))
+    sliderContainer.appendChild(createSliderShortcutButton(25, slider.id))
+    sliderContainer.appendChild(createSliderShortcutButton(50, slider.id))
+    sliderContainer.appendChild(createSliderShortcutButton(75, slider.id))
+    sliderContainer.appendChild(createSliderShortcutButton(100, slider.id))
     sliderContainer.appendChild(slider);
+    controlsRow.appendChild(sliderContainer);
 
-    const freqDisplay = document.createElement("span");
+    const freqDisplay = document.createElement("td");
     freqDisplay.id = slider.id + '-display';
     freqDisplay.innerHTML = `${slider.value}%`;
-    sliderContainer.innerHTML += "  "
-    sliderContainer.appendChild(freqDisplay)
-
-    sliderContainer.innerHTML += "<br/> <br/>"
-    controlsContainer.appendChild(sliderContainer)
+    controlsRow.appendChild(freqDisplay) ;
+    controlsTable.appendChild(controlsRow)
   }
 
   // For some reason, we have to add this outside of the loop
@@ -133,6 +145,21 @@ function newDrill() {
     const e = document.getElementById(`slider-id-${i}`)
     e.oninput = handleSliderMove;
   }
+
+  const buttonsRow = document.createElement("tr");
+
+  const skipButtonContainer = document.createElement("td");
+  const skipButton = document.createElement('input')
+  skipButton.value = "Skip";
+  skipButton.type = "button";
+  skipButton.onclick = function() {
+    newDrill();
+  }
+  skipButtonContainer.appendChild(skipButton);
+  buttonsRow.appendChild(skipButtonContainer);
+  buttonsRow.appendChild(document.createElement("td"));
+
+  const nextButtonContainer = document.createElement("td");
   const nextButton = document.createElement('input')
   nextButton.value = "Next";
   nextButton.type = "button";
@@ -140,7 +167,10 @@ function newDrill() {
     appendResults(board, chosenRow);
     newDrill();
   }
-  controlsContainer.appendChild(nextButton);
+  nextButtonContainer.appendChild(nextButton);
+  buttonsRow.appendChild(nextButtonContainer);
+
+  controlsTable.appendChild(buttonsRow);
 }
 
 function appendResults(board, rowData) {
@@ -241,4 +271,23 @@ function getAccuracyThreshold() {
     return 15;
   }
   return result;
+}
+
+function createSliderShortcutButton(val, targetID) {
+  const elem = document.createElement('input')
+  elem.type = 'button';
+  elem.classList.add('shortcut-slider-button');
+  elem.value = val;
+
+  elem.onclick = function() {
+    const elem = document.getElementById(targetID);
+    elem.value = val;
+    handleSliderMove({
+      srcElement: {
+        id: targetID,
+        value: val,
+      }
+    })
+  }
+  return elem;
 }
