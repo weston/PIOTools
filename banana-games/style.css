@@ -1,0 +1,93 @@
+#body-elem {
+  text-align: center;
+}
+
+.frequency-slider {
+
+}
+
+#trainer-results {
+  margin: auto;
+  width: 50%;
+}
+
+#trainer-controls {
+  margin: auto;
+  width: 25%;
+  font-size: 14pt;
+}
+
+
+td, th {
+  padding-right: 10px;
+  padding-left: 10px;
+  width: 350px;
+  padding-bottom: 10px;
+}
+
+
+#trainer-body {
+  margin: auto;
+  width: 100%;
+}
+
+#results-table-entries {
+  margin: auto;
+}
+
+
+.slider {
+  height: 20px;
+  width: 200px;
+  border-radius: 10px;  
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.club {
+  color: green;
+}
+
+.heart {
+  color:red;
+
+}
+
+.diamond {
+  color:blue;
+}
+
+#trainer-board {
+  font-size: 30pt;
+}
+
+.too-high-result {
+  color: green;
+}
+
+.too-low-result {
+  color: red;
+}
+
+#accuracy-threshold {
+  width: 30px;
+}
+
+.correct-row {
+  background-color: #AFE1AF;
+}
+
+.incorrect-row {
+  background-color: #FFCCCB;
+}
+
+.results-board {
+  font-size: 20pt;
+}
+
+.shortcut-slider-button {
+
+}
