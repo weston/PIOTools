@@ -30,12 +30,15 @@
   FAQ
 </h3>
 1. Why does my sim exploitability go up after pruning the tree?
+<br/>
 It's mostly because of a side effect of re-saving a Pio file that is not a full save. Because the river nodes (and possibly turn nodes) are unsolved when we load a sim and save it, the solver caches the exploitability using the default strategy of mixing every action at equal proportion. However, that doesn't really matter because we delete those nodes anyway when we save it anyway.
 <br/><br/>
 2. Can you add X feature?
+<br/>
 Maybe. Suggest it in the discord.
 <br/><br/>
 3. Does this work with JeSolver? Pio2? Pio3?
+<br/>
 Yes to all.
 <br/><br/>
 </body>
