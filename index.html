@@ -7,9 +7,9 @@
   <title>Advanced Pio Tools</title>
 </head>
 
-<body>
+<body style="width:600px">
   <h1>Advanced Pio Tools (beta)</h1>
- Advanced Pio Tools is a program that contains various tooling for PioSolver. APT is compatible with Pio2 and Pio3. 
+ Advanced Pio Tools is a program that contains various tooling for PioSolver
  
 <h3>
   Tree Pruning
@@ -25,8 +25,18 @@
   <br/><br/>
   APT also provides tooling to generate hand histories from Pio sims, save the hands you have played vs the solver at hand history files, and re-solve batches of sims to higher accuracy. APT is currently still in it's beta phase, but is fully functional and is being offered for $250 USD. 
   <br/>
-  The installer can be found at <a href="https://apt-installer.s3.amazonaws.com/advanced-pio-tools-1.0.0+Setup.exe">here</a>. Please contact wmizumoto@gmail.com to unlock the fully paid version. Alternatively, you can join the discord for this project <a href="https://discord.gg/UKAZG9He">here</a>.
-  
+  The installer can be found at <a href="https://apt-installer.s3.amazonaws.com/advanced-pio-tools-1.0.0+Setup.exe">here</a>. You can pay for the full version of the software within the app itself. Please link your solver, and make sure that you can generate a few hand histories before buying the full version. Please, join the <a href="https://discord.gg/UKAZG9He">discord</a> for this project if you have any questions. 
+<h3>
+  FAQ
+</h3>
+1. Why does my sim exploitability go up after pruning the tree?
+It's mostly because of a side effect of re-saving a Pio file that is not a full save. Because the river nodes (and possibly turn nodes) are unsolved when we load a sim and save it, the solver caches the exploitability using the default strategy of mixing every action at equal proportion. However, that doesn't really matter because we delete those nodes anyway when we save it anyway.
+<br/><br/>
+2. Can you add X feature?
+Maybe. Suggest it in the discord.
+<br/><br/>
+3. Does this work with JeSolver? Pio2? Pio3?
+Yes to all.
+<br/><br/>
 </body>
-
 </html>
