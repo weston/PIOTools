@@ -4,30 +4,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Advanced Pio Tools</title>
+  <title>Advanced Pio Tools (beta)</title>
 </head>
 
 <body style="width:800px">
   <h1>Advanced Pio Tools (beta)</h1>
  Advanced Pio Tools is a program that contains various tooling for PioSolver
+ You can download the installer <a href="https://apt-installer.s3.amazonaws.com/advanced-pio-tools-1.0.0+Setup.exe">here</a>.
+ A free 1-week long trial period is available to ensure that the software does what you expect, and works properly on your computer. 
+ Purchasing the software is available in the app directly. However, alternative forms of payment are accepted. Please ask in the <a href="https://discord.gg/Rkuyy93MRc">Discord server</a>.
+ 
 
 <h3>
   Tree Pruning
  </h3>
   <a href="https://www.youtube.com/watch?v=tnr6Kv5Fj94"> Here is a video explaining tree pruning</a>
   <br/>
-  One functionality of APT is to prune existing sims to only use the highest ev subset of betsizes for a given node. APT does this by creating subtrees for the spot, testing out each bet size (or subset of bet sizes) individually, choosing the highest EV bet size, and node locking that strategy onto the original sim. 
+  APT lets you limit a turn or river node to use only some subset of the bet sizes in the tree while allowing the those bet sizes to be different for any runout. You can do this through the direct PioViewer integration, or through a bulk job running process. APT accomplishes this by a subtree for the node in question, testing out every possible subset of bet sizes individually, choosing the set of bet sizes with the highest EV, and node locking that new strategy onto the original sim. Some people find this useful for drilling vs. the GTO trainer, analyzing aggregated reports, or just going over individual hands.
   
   <br/>
-  <img src="https://i.imgur.com/9n2WGmk.png" alt="" style="width:800px;"></img>
-  <br/><br/>
+  <table>
+   <tr><td><img src="https://i.imgur.com/9n2WGmk.png" alt="" style="width:600px;"></img><img src="https://i.imgur.com/yaxpdRX.png" style="width: 600px"></img></td></tr>
+  </table>
+  <br/>
   Here is an example of a BB vs BTN 3BP sim where the turn cbet node has been locked to use a single size, despite the original sim having 3 different bet sizes at this node.
   <br/>
-  <img src="https://i.imgur.com/yaxpdRX.png" style="width: 800px"></imd>
-  <br/><br/>
-  APT also provides tooling to generate hand histories from Pio sims, save the hands you have played vs the solver at hand history files, and re-solve batches of sims to higher accuracy. APT is currently still in it's beta phase, but is fully functional and is being offered for $250 USD. 
   <br/>
-  The installer can be found at <a href="https://apt-installer.s3.amazonaws.com/advanced-pio-tools-1.0.0+Setup.exe">here</a>. You can pay for the full version of the software within the app itself. Please link your solver, and make sure that you can generate a few hand histories before buying the full version. Please, join the <a href="https://discord.gg/Rkuyy93MRc">discord</a> for this project if you have any questions. 
+  <br/><br/>
+<table>
+  <tr>
+  	<td>
+    	<img src="https://i.imgur.com/anb7r7k.png" style="width: 600px"></img>
+  		<img src="https://i.imgur.com/qgadk6m.png" style="width: 600px"></img><img src="https://i.imgur.com/juro0md.png" style="width: 600px"></img>
+    </td>
+  </tr>
+</table>
+<br/>
+Here is an example of a turn cbet node that is mixing a lot of different sizes. We can use the PioViewer integration to have it solve down to the optimal 2 size solution, or the optimal 1 size solution. 
+
+<br/><br/><br/>
+  APT also provides tooling to generate hand histories from Pio sims, save the hands you have played vs the solver at hand history files, and re-solve batches of sims to higher accuracy. 
+  <br/>
+
 <h3>
   FAQ
 </h3>
