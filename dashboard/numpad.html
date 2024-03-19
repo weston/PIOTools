@@ -12,16 +12,50 @@
 </head>
 <body id="body">
     <h3>Last Copied Value <span id="last-copied"></span></h3>
-    <br/><br/>
+    <br/>
     <h3>Pot Size: <span id="numpad-output">5.5</span></h3>
     <table id="numpad">
     </table>
+    <button id="bc">Bet + Call + Copy</button>
     <table id="percentages"></table>
     <br/><br/>
     <h3>Preflop</h3>
     <table id="table"></table>
+    <br/>
+    <div id="history">
+    </div>
     <script>
         let valueCopiedSinceLastType = true;
+        const historyPotSizes = []
+
+        function copyValue(value) {
+            navigator.clipboard.writeText(value);
+            document.getElementById('last-copied').innerHTML = value;
+            addToHistory(document.getElementById('numpad-output').innerHTML)
+            setHistoryPotSizes()
+        }
+
+        function setHistoryPotSizes() {
+            const elem = document.getElementById('history');
+            elem.innerHTML = ''
+            for (const potSize of historyPotSizes.sort((x, y)=> x - y)) {
+                const button = document.createElement('button')
+                button.innerHTML = potSize;
+                button.classList = 'history-button'
+                button.onclick = function() {
+                    document.getElementById('numpad-output').innerHTML = potSize
+                }
+                elem.innerHTML += '</br>'
+                elem.appendChild(button)
+            }
+        }
+
+        function addToHistory(newPotSize) {
+            if (historyPotSizes.includes(parseFloat(newPotSize))) {
+                return
+            }
+            historyPotSizes.push(parseFloat(newPotSize))
+        }
 
         function load() {
             const pfButtons = [
@@ -30,7 +64,6 @@
             const pfButtonsPerRow = 4;
             const table = document.getElementById('table')
             let row = document.createElement('tr')
-            console.log(row)
             for (const buttonText of pfButtons) {
                 const td = document.createElement('td')
                 const button = document.createElement('button')
@@ -59,6 +92,7 @@
                 button.innerHTML = buttonText
                 function getClickHandler(valueClicked) {
                     function fn() {
+                        deselectAllPercentButtons()
                         if (valueClicked === 'C') {
                             document.getElementById('numpad-output').innerHTML = '_';
                             valueCopiedSinceLastType = false;
@@ -86,6 +120,7 @@
             }
 
             loadPercentageButtons()
+            document.getElementById('bc').onclick = betAndCall
         }
 
         function loadPercentageButtons() {
@@ -104,9 +139,9 @@
                         const typedInValue = document.getElementById('numpad-output').innerHTML;
                         const potSize = parseFloat(typedInValue)
                         const betSize = (potSize * valueClicked) / 100;
-                        navigator.clipboard.writeText(betSize);
-                        document.getElementById('last-copied').innerHTML = betSize;
+                        copyValue(betSize.toFixed(1))
                         valueCopiedSinceLastType = true;
+                        selectPercentButton(valueClicked)
                     }
                     return fn
                 }
@@ -122,11 +157,37 @@
 
         function getButtonClickFunction(value) {
             function handleButtonClick() {
-                navigator.clipboard.writeText(value);
-                document.getElementById('last-copied').innerHTML = value;
+                copyValue(value)
             }
             return handleButtonClick
         }
+
+        function deselectAllPercentButtons() {
+            const previouslySelected = document.getElementsByClassName('selected-button')
+            for (const ps of previouslySelected) {
+                ps.classList.remove('selected-button')
+            }
+        }
+
+        function selectPercentButton(betSize) {
+            for (const btn of document.getElementsByClassName('percentage-button')) {
+                if (btn.innerHTML === betSize.toString() + '%') {
+                    btn.classList.add('selected-button')
+                }
+            }
+        }
+
+        function betAndCall() {
+            const selectedButton = document.getElementsByClassName('selected-button')[0]
+            const numpadOutput = document.getElementById('numpad-output') 
+            const potSize = parseFloat(numpadOutput.innerHTML)
+            const betSizePercent = parseFloat(selectedButton.innerHTML.replace('%', ''))
+            console.log(numpadOutput, potSize, betSizePercent)
+            const newPotSize = potSize + (potSize*2*parseFloat(betSizePercent)/ 100)
+            numpadOutput.innerHTML = newPotSize.toFixed(1)
+            copyValue(newPotSize.toFixed(1))
+        }
+
         load()
     </script>
     <style>
@@ -152,6 +213,19 @@
             margin: 40px;
         }
 
+        #bc {
+            width: 165px;
+            height: 35px;
+        }
+
+        .selected-button {
+            background-color: lightblue;
+        }
+
+        .history-button {
+            width: 100px;
+            height: 35px;
+        }
     </style>
 </body>
 </html>
