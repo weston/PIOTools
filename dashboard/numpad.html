@@ -1,0 +1,157 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Global Poker Numpad</title>
+  <meta name="description" content="Ranges">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  </div>
+</head>
+<body id="body">
+    <h3>Last Copied Value <span id="last-copied"></span></h3>
+    <br/><br/>
+    <h3>Pot Size: <span id="numpad-output">5.5</span></h3>
+    <table id="numpad">
+    </table>
+    <table id="percentages"></table>
+    <br/><br/>
+    <h3>Preflop</h3>
+    <table id="table"></table>
+    <script>
+        let valueCopiedSinceLastType = true;
+
+        function load() {
+            const pfButtons = [
+                '2.5', '3', '3.5', '5', '8', '10.5', '12', '22', '25', '27',
+            ]
+            const pfButtonsPerRow = 4;
+            const table = document.getElementById('table')
+            let row = document.createElement('tr')
+            console.log(row)
+            for (const buttonText of pfButtons) {
+                const td = document.createElement('td')
+                const button = document.createElement('button')
+                button.className = 'pf-button'
+                button.innerHTML = buttonText
+                button.onclick = getButtonClickFunction(buttonText)
+                td.appendChild(button)
+                row.appendChild(td)
+                if (row.children.length === pfButtonsPerRow) {
+                    table.appendChild(row)
+                    row = document.createElement('tr')
+                }
+            }
+            if (row.children.length > 0) {
+                table.appendChild(row)
+            }
+
+            ////////////// numpad
+            const numpadButtons = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', '.']
+            const numpadTable = document.getElementById('numpad')
+            row = document.createElement('tr')
+            for (const buttonText of numpadButtons) {
+                const td = document.createElement('td')
+                const button = document.createElement('button')
+                button.className = 'numpad-button'
+                button.innerHTML = buttonText
+                function getClickHandler(valueClicked) {
+                    function fn() {
+                        if (valueClicked === 'C') {
+                            document.getElementById('numpad-output').innerHTML = '_';
+                            valueCopiedSinceLastType = false;
+                            return;
+                        }
+                        let oldValue = document.getElementById('numpad-output').innerHTML;
+                        if (oldValue == '_' || valueCopiedSinceLastType)  {
+                            oldValue = ''
+                        }
+                        valueCopiedSinceLastType = false;
+                        if (valueClicked === '.' && oldValue.includes('.')) {
+                            return
+                        }
+                        document.getElementById('numpad-output').innerHTML = oldValue + valueClicked;
+                    }
+                    return fn
+                }
+                button.onclick = getClickHandler(buttonText)
+                td.appendChild(button)
+                row.appendChild(td)
+                if (row.children.length === 3) {
+                    numpadTable.appendChild(row)
+                    row = document.createElement('tr')
+                }
+            }
+
+            loadPercentageButtons()
+        }
+
+        function loadPercentageButtons() {
+             /////////////////// Percentages
+            const percentageButtons = [10, 15, 25, 33, 40, 50, 66, 75, 100, 125, 150, 175, 200, 250, 300]
+            const percentTable = document.getElementById('percentages')
+            percentTable.innerHTML = ''
+            row = document.createElement('tr')
+            for (const buttonText of percentageButtons) {
+                const td = document.createElement('td')
+                const button = document.createElement('button')
+                button.className = 'percentage-button'
+                button.innerHTML = buttonText.toString() + '%'
+                function getClickHandler(valueClicked) {
+                    function fn() {
+                        const typedInValue = document.getElementById('numpad-output').innerHTML;
+                        const potSize = parseFloat(typedInValue)
+                        const betSize = (potSize * valueClicked) / 100;
+                        navigator.clipboard.writeText(betSize);
+                        document.getElementById('last-copied').innerHTML = betSize;
+                        valueCopiedSinceLastType = true;
+                    }
+                    return fn
+                }
+                button.onclick = getClickHandler(buttonText)
+                td.appendChild(button)
+                row.appendChild(td)
+                if (row.children.length === 5) {
+                    percentTable.appendChild(row)
+                    row = document.createElement('tr')
+                }
+            }
+        }
+
+        function getButtonClickFunction(value) {
+            function handleButtonClick() {
+                navigator.clipboard.writeText(value);
+                document.getElementById('last-copied').innerHTML = value;
+            }
+            return handleButtonClick
+        }
+        load()
+    </script>
+    <style>
+        .pf-button {
+            width: 50px;
+        }
+
+        .numpad-button {
+            width: 55px;
+            height: 55px;
+        }
+
+        .percentage-button {
+            width: 50px;
+            height: 35px;
+        }
+
+        #percentages {
+            margin-top: 25px;
+        }
+
+        #body {
+            margin: 40px;
+        }
+
+    </style>
+</body>
+</html>
