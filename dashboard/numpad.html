@@ -17,6 +17,8 @@
     <table id="numpad">
     </table>
     <button id="bc">Bet + Call + Copy</button>
+    <br/>
+    <button id="paste">Paste</button>
     <table id="percentages"></table>
     <br/><br/>
     <h3>Preflop</h3>
@@ -121,6 +123,16 @@
 
             loadPercentageButtons()
             document.getElementById('bc').onclick = betAndCall
+            document.getElementById('paste').onclick = setPotToCopiedValue
+        }
+
+        function setPotToCopiedValue() {
+            const elem = document.getElementById('numpad-output');
+
+            navigator.clipboard.readText().then((x) => {
+                parseFloat(x)
+                elem.innerHTML = x;
+            });
         }
 
         function loadPercentageButtons() {
@@ -141,6 +153,7 @@
                         const betSize = (potSize * valueClicked) / 100;
                         copyValue(betSize.toFixed(1))
                         valueCopiedSinceLastType = true;
+                        deselectAllPercentButtons()
                         selectPercentButton(valueClicked)
                     }
                     return fn
@@ -213,7 +226,7 @@
             margin: 40px;
         }
 
-        #bc {
+        #bc, #paste {
             width: 165px;
             height: 35px;
         }
