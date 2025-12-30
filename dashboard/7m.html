@@ -39,6 +39,10 @@
   <span class="parent">
     <center>
       <button onclick="generateRandomNumber()" class="button" id="result">0</button>
+
+      <!-- NEW: sizing schema box -->
+      <div id="schema_box" class="schema-box"></div>
+
       <div id="bar"></div>
     </center>
   </span>
@@ -46,6 +50,37 @@
   <script>
     const DIRECTORY = "coinpoker_500NL";
     const POS_ORDER = ["UTG", "LJ", "HJ", "CO", "BTN", "SB", "BB"];
+
+    // NEW: sizing schema lookup by "P1_vs_P2"
+    // Values are the 3 numbers you gave (as strings to preserve formatting like 9.5, 25.5, etc.)
+    const SIZING_SCHEMA = {
+      "UTG_vs_LJ": ["2.5", "9", "23"],
+      "UTG_vs_HJ": ["2.5", "9", "23"],
+      "UTG_vs_CO": ["2.5", "9.5", "24"],
+      "UTG_vs_BTN": ["2.5", "10", "25.5"],
+      "UTG_vs_SB": ["2.5", "11.5", "23"],
+      "UTG_vs_BB": ["2.5", "12", "24"],
+
+      "LJ_vs_HJ": ["2.5", "9", "23"],
+      "LJ_vs_CO": ["2.5", "9.5", "24"],
+      "LJ_vs_BTN": ["2.5", "10", "25.5"],
+      "LJ_vs_SB": ["2.5", "11.5", "23"],
+      "LJ_vs_BB": ["2.5", "12", "24"],
+
+      "HJ_vs_CO": ["2.5", "9.5", "25"],
+      "HJ_vs_BTN": ["2.5", "10", "25.5"],
+      "HJ_vs_SB": ["2.5", "12", "24"],
+      "HJ_vs_BB": ["2.5", "13", "26"],
+
+      "CO_vs_BTN": ["2.4", "10", "25.5"],
+      "CO_vs_SB": ["2.5", "12", "24"],
+      "CO_vs_BB": ["2.5", "13", "26"],
+
+      "BTN_vs_SB": ["2.5", "11", "22"],
+      "BTN_vs_BB": ["2.5", "14", "28"],
+
+      "SB_vs_BB": ["3.5", "10.5", "21"],
+    };
 
     function getSelectedPlayer(pClass) {
       var elements = document.getElementsByClassName(pClass);
@@ -65,7 +100,7 @@
       const i2 = POS_ORDER.indexOf(player2);
       if (i1 === -1 || i2 === -1) return false;
 
-      // Must be a later position than P1 (e.g., UTG can face LJ+; SB can only face BB)
+      // Must be later position than P1
       return i2 > i1;
     }
 
@@ -84,7 +119,6 @@
         }
       }
 
-      // If current P2 is invalid vs new P1, auto-pick the first valid P2 after P1
       var p2 = getSelectedPlayer("p2b");
       if (!isValidPlayerCombo(p1Position, p2)) {
         const i1 = POS_ORDER.indexOf(p1Position);
@@ -118,10 +152,32 @@
       setImages();
     }
 
+    // NEW: update the schema box based on selected (p1,p2)
+    function updateSchemaBox(p1, p2) {
+      const box = document.getElementById("schema_box");
+      if (!box) return;
+
+      const key = `${p1}_vs_${p2}`;
+      const vals = SIZING_SCHEMA[key];
+
+      if (!p1 || !p2) {
+        box.innerHTML = "";
+        return;
+      }
+
+      if (!vals) {
+        box.innerHTML = `<div><strong>${p1} vs ${p2}</strong></div><div>(no sizing schema found)</div>`;
+        return;
+      }
+
+      box.innerHTML =
+        `<div><strong>${p1} vs ${p2}</strong></div>` +
+        `<div>${vals[0]} / ${vals[1]} / ${vals[2]}</div>`;
+    }
+
     function setImages() {
       var p1 = getSelectedPlayer("p1b");
       var p2 = getSelectedPlayer("p2b");
-
       if (!p1 || !p2) return;
 
       var path1 = `./images/${DIRECTORY}/${p1}_vs_${p2}_p1.png`;
@@ -131,6 +187,8 @@
       var elem2 = document.getElementById("image_2");
       elem1.src = path1;
       elem2.src = path2;
+
+      updateSchemaBox(p1, p2);
     }
 
     function generateRandomNumber() {
@@ -172,9 +230,11 @@
       padding-top: 2px;
       padding-bottom: 2px;
     }
+
     #image_1, #image_2 {
       width: 80%;
     }
+
     .button {
       display: block;
       width: 100%;
@@ -186,10 +246,23 @@
       cursor: pointer;
       text-align: center;
     }
+
+    .schema-box {
+      margin-top: 8px;
+      width: 100%;
+      max-width: 520px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 16px;
+      background: #fafafa;
+    }
+
     .parent {
       width: 100%;
       height: 100%;
     }
+
     .bar-elem {
       padding: 10px;
       width: 10px;
