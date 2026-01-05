@@ -16,6 +16,11 @@
   <center>
     <br/>
 
+    <!-- NEW: Dataset toggle (expandable) -->
+    <div id="dataset_toggle" class="dataset-toggle"></div>
+
+    <br/>
+
     <!-- Positions -->
     <button class="btn btn-danger p1b" onclick="selectP1Button('UTG')">UTG</button>
     <button class="btn btn-danger p1b" onclick="selectP1Button('LJ')">LJ</button>
@@ -40,7 +45,7 @@
     <center>
       <button onclick="generateRandomNumber()" class="button" id="result">0</button>
 
-      <!-- NEW: sizing schema box -->
+      <!-- sizing schema box -->
       <div id="schema_box" class="schema-box"></div>
 
       <div id="bar"></div>
@@ -48,11 +53,17 @@
   </span>
 
   <script>
-    const DIRECTORY = "coinpoker_500NL";
+    // NEW: Expandable dataset config
+    // Add more sets by appending entries here.
+    const DATASETS = [
+      { id: "rfi_25", label: "2.5BB RFI", directory: "coinpoker_500NL" },
+      { id: "rfi_20", label: "2BB RFI",  directory: "coinpoker_500NL_small_RFI" },
+    ];
+
+    let ACTIVE_DATASET_ID = DATASETS[0].id;
+
     const POS_ORDER = ["UTG", "LJ", "HJ", "CO", "BTN", "SB", "BB"];
 
-    // NEW: sizing schema lookup by "P1_vs_P2"
-    // Values are the 3 numbers you gave (as strings to preserve formatting like 9.5, 25.5, etc.)
     const SIZING_SCHEMA = {
       "UTG_vs_LJ": ["2.5", "9", "23"],
       "UTG_vs_HJ": ["2.5", "9", "23"],
@@ -82,6 +93,35 @@
       "SB_vs_BB": ["3.5", "10.5", "21"],
     };
 
+    function getActiveDataset() {
+      return DATASETS.find(d => d.id === ACTIVE_DATASET_ID) || DATASETS[0];
+    }
+
+    // NEW: render dataset toggle UI
+    function renderDatasetToggle() {
+      const root = document.getElementById("dataset_toggle");
+      if (!root) return;
+
+      const itemsHtml = DATASETS.map((d, idx) => {
+        const checked = d.id === ACTIVE_DATASET_ID ? "checked" : "";
+        return `
+          <label class="dataset-option">
+            <input type="radio" name="dataset" value="${d.id}" ${checked}
+              onchange="setActiveDataset('${d.id}')">
+            <span>${d.label}</span>
+          </label>
+        `;
+      }).join("");
+
+      root.innerHTML = `<div class="dataset-title">Dataset</div><div class="dataset-options">${itemsHtml}</div>`;
+    }
+
+    // NEW: change dataset + refresh images
+    function setActiveDataset(datasetId) {
+      ACTIVE_DATASET_ID = datasetId;
+      setImages();
+    }
+
     function getSelectedPlayer(pClass) {
       var elements = document.getElementsByClassName(pClass);
       for (let i = 0; i < elements.length; i++) {
@@ -100,7 +140,6 @@
       const i2 = POS_ORDER.indexOf(player2);
       if (i1 === -1 || i2 === -1) return false;
 
-      // Must be later position than P1
       return i2 > i1;
     }
 
@@ -152,7 +191,6 @@
       setImages();
     }
 
-    // NEW: update the schema box based on selected (p1,p2)
     function updateSchemaBox(p1, p2) {
       const box = document.getElementById("schema_box");
       if (!box) return;
@@ -180,8 +218,11 @@
       var p2 = getSelectedPlayer("p2b");
       if (!p1 || !p2) return;
 
-      var path1 = `./images/${DIRECTORY}/${p1}_vs_${p2}_p1.png`;
-      var path2 = `./images/${DIRECTORY}/${p1}_vs_${p2}_p2.png`;
+      const dataset = getActiveDataset();
+      const directory = dataset.directory;
+
+      var path1 = `./images/${directory}/${p1}_vs_${p2}_p1.png`;
+      var path2 = `./images/${directory}/${p1}_vs_${p2}_p2.png`;
 
       var elem1 = document.getElementById("image_1");
       var elem2 = document.getElementById("image_2");
@@ -220,6 +261,7 @@
     }
 
     // Defaults
+    renderDatasetToggle();
     selectP1Button("BTN");
     selectP2Button("BB");
     setImages();
@@ -256,6 +298,39 @@
       padding: 8px 10px;
       font-size: 16px;
       background: #fafafa;
+    }
+
+    /* NEW: dataset toggle styling */
+    .dataset-toggle {
+      display: inline-block;
+      width: 100%;
+      max-width: 520px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: #fff;
+      text-align: left;
+    }
+
+    .dataset-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .dataset-options {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .dataset-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 0;
     }
 
     .parent {
